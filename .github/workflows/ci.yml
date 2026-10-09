@@ -29,10 +29,12 @@ jobs:
       - name: Check reachable history and source for secrets
         shell: pwsh
         run: |
-          ./scripts/restore-secret-scanner.ps1 -OutputDirectory .staging/secret-scanner-ci
-          & ./.staging/secret-scanner-ci/tool/gitleaks.exe git . --redact --log-opts=--all --gitleaks-ignore-path .gitleaksignore
+          $scannerRoot = Join-Path $env:RUNNER_TEMP 'lcb-secret-scanner'
+          ./scripts/restore-secret-scanner.ps1 -OutputDirectory $scannerRoot
+          $scanner = Join-Path $scannerRoot 'tool/gitleaks.exe'
+          & $scanner git . --redact --log-opts=--all --gitleaks-ignore-path .gitleaksignore
           if ($LASTEXITCODE -ne 0) { throw 'History secret scan failed.' }
-          & ./.staging/secret-scanner-ci/tool/gitleaks.exe dir . --redact --gitleaks-ignore-path .gitleaksignore
+          & $scanner dir . --redact --gitleaks-ignore-path .gitleaksignore
           if ($LASTEXITCODE -ne 0) { throw 'Source secret scan failed.' }
 
       - name: Set up Node.js 24

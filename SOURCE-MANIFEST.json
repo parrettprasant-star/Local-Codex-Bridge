@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T21:36:37.229Z",
+  "generated_at": "2026-10-09T21:41:02.1317513Z",
   "purpose": "local-source-review-not-public-release",
   "binaries_included": false,
   "git_history_included": false,
@@ -13,8 +13,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "bytes": 3271,
-      "sha256": "85a1cc47c01a76200a58dc465054bd89e3e20229a3282ad49bee0ad9471793c6",
+      "bytes": 3320,
+      "sha256": "1adbccf30e167aedf3e724f49a74e6a509700065024e08d853c4060c87a493ae",
       "transformation": null
     },
     {
