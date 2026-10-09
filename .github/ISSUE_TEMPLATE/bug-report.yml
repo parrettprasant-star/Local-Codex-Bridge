@@ -1,0 +1,33 @@
+name: Bug report
+description: Reproducible Bridge problems with redacted diagnostics
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Do not paste API keys, Tunnel IDs, personal session text, raw history databases, private project paths or full browser screenshots. Use SECURITY.md for sensitive issues."
+  - type: input
+    id: build
+    attributes:
+      label: Exact build label and executable / UI hash
+      description: Copy the non-secret Build and hash values from Diagnostics.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and expected / actual result
+      description: Distinguish local MCP discovery, real Cloud requests, and WebView rendering.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and redacted error
+      description: Windows, Node, Codex and WebView2 versions; omit credentials and private data.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed credentials, private history and local user/project paths.
+          required: true

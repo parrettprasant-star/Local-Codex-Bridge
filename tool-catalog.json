@@ -1,0 +1,748 @@
+[
+  {
+    "name": "codex_threads",
+    "title": "Codex Threads",
+    "description": "List or search persistent local Codex threads through thread/list, or read one thread through thread/read. This does not reconstruct live Bridge events.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "When supplied, read this exact Codex thread instead of listing threads."
+        },
+        "include_turns": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include persisted turns when reading one thread."
+        },
+        "cwd": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Optional exact absolute Windows drive-letter cwd filter for thread/list."
+        },
+        "search_term": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Optional Codex title substring filter for thread/list."
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000,
+          "description": "Opaque cursor returned by a prior thread/list call."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20,
+          "description": "Maximum threads in the returned page."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Codex Threads",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "codex_turn",
+    "title": "Start or Continue Codex Turn",
+    "description": "Submit a thin Bridge task that creates one durable native Codex thread, or continue a task_id on its owned thread. Prefer continuing the same native thread when its context remains useful, but a fresh thread is allowed only through the compatibility path. thread_id is not a permanent task identity and remains a compatibility path for direct native-session control. Returns as soon as accepted; observe separately for events and completion.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200000,
+          "description": "User text passed directly to Codex as one text input item."
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Existing persistent Codex thread to resume. Omit to create a new thread."
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Continue the original Bridge task and its owned Codex thread."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Human-readable task title; no model call is used to generate it."
+        },
+        "on_busy": {
+          "type": "string",
+          "enum": [
+            "error",
+            "fresh"
+          ],
+          "default": "error",
+          "description": "What to do when native thread resume reports that another runtime/client owns the thread. The default returns structured busy; fresh starts a new thread only after an explicit request and requires cwd."
+        },
+        "cwd": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Absolute Windows drive-letter cwd. Required for a new thread; optional override for resume."
+        },
+        "required_outputs": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "description": "Optional output files that must exist and be non-empty before the task can be marked completed."
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Explicit manual model selection passed to app-server. Omit to use the guarded gpt-5.6-luna default."
+        },
+        "effort": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "Optional manual reasoning effort. Guarded GPT-5.6 Luna, Terra, and Sol selections use max."
+        },
+        "task_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Optional non-prompt task-type metadata reserved for future template policies."
+        },
+        "task_complexity": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "high"
+          ],
+          "default": "normal",
+          "description": "Explicit task complexity metadata. High complexity without a manual model selection returns a confirmation requirement and starts no Codex turn."
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Stable client retry key. Repeated submissions return the existing task without another Luna turn."
+        },
+        "fingerprint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Compatibility alias for idempotency_key."
+        },
+        "write_roots": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "description": "Explicit Windows write roots required for workspace-write tasks."
+        },
+        "sandbox": {
+          "type": "string",
+          "enum": [
+            "read-only",
+            "workspace-write",
+            "danger-full-access"
+          ],
+          "description": "Codex app-server sandbox mode override."
+        },
+        "approval_policy": {
+          "type": "string",
+          "enum": [
+            "untrusted",
+            "on-request",
+            "never"
+          ],
+          "description": "Codex app-server approval policy override."
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "thread_id"
+          ]
+        },
+        {
+          "required": [
+            "cwd"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Start or Continue Codex Turn",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "create_agent_task",
+    "title": "Create Codex Agent Task",
+    "description": "Create one Codex Agent task through the existing native Codex app-server path and return a bounded Result Manifest. Phase 1 uses the codex_local provider with read-only sandbox and on-request approval; use get_task_status for later progress or completion. This does not create a Work Agent or a second task runtime.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200000,
+          "description": "Task instruction passed to the local Codex Agent."
+        },
+        "cwd": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "description": "Optional absolute Windows drive-letter project directory; project_id can resolve it automatically."
+        },
+        "required_outputs": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "description": "Optional output files that must exist and be non-empty before the task can be marked completed."
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Registered local project identifier used to resolve the working directory."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Optional human-readable task title."
+        },
+        "agent_id": {
+          "type": "string",
+          "enum": [
+            "codex_local"
+          ],
+          "default": "codex_local",
+          "description": "Phase 1 Codex Agent provider identifier."
+        }
+      },
+      "required": [
+        "instruction"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "cwd"
+          ]
+        },
+        {
+          "required": [
+            "project_id"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create Codex Agent Task",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "get_task_status",
+    "title": "Get Agent Task Status",
+    "description": "Read one Codex Agent task and its bounded Result Manifest by exact task_id. This is read-only and never starts, resumes, or creates work.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Exact task id returned by create_agent_task."
+        }
+      },
+      "required": [
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Agent Task Status",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "list_projects",
+    "title": "List Local Projects",
+    "description": "List Bridge-registered local projects and their bounded capability declarations. This is read-only and does not scan the filesystem or create a project entry.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Local Projects",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "get_project",
+    "title": "Get Local Project",
+    "description": "Read one Bridge-registered local project by exact project_id, including its root path and availability. This does not modify the project or filesystem.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Exact registered project identifier."
+        }
+      },
+      "required": [
+        "project_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Local Project",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "get_agent_list",
+    "title": "List Available Agents",
+    "description": "List the Agent providers currently registered by Local Codex Bridge. Provider health is read-only; lazy Codex startup is not triggered by this call.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "include_unavailable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include providers that are currently unavailable."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Available Agents",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "get_capabilities",
+    "title": "Get Agent Capabilities",
+    "description": "Read the bounded capability catalog for one registered Agent provider. Phase 1.5 exposes file_read for project tasks; advanced capabilities remain informational and gated.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "enum": [
+            "codex_local"
+          ],
+          "default": "codex_local",
+          "description": "Registered Agent provider identifier."
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Agent Capabilities",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "codex_observe",
+    "title": "Observe Codex Turn",
+    "description": "Read bounded incremental sanitized runtime events for a thread, or return the persisted Result Manifest for a task_id. Optional wait_ms performs one bounded event-driven wait when the live turn is active; it is not polling or stall detection. After Bridge process loss, thread observation falls back to persistent history; task_id observation reads the durable handoff without calling Luna. A long interval with no new command or output can still mean Codex is actively reasoning; absence of new command activity alone is not evidence of a stall. When actively supervising an in-progress turn, use repeated bounded-wait observe calls until terminal; do not end supervision merely because one snapshot is inProgress. After every wake or deadline return, inspect the newly available events/state and decide whether steer, respond, or interruption is needed before starting the next bounded wait.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Codex thread to observe."
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Bridge task whose persisted Result Manifest should be returned."
+        },
+        "cursor": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Return runtime events with a cursor greater than this value."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50,
+          "description": "Maximum runtime events to return."
+        },
+        "wait_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000,
+          "default": 0,
+          "description": "Optional per-call wait for the next live runtime change when nothing useful is ready; 0 returns immediately. This is event-driven waiting, not stall detection."
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "thread_id"
+          ]
+        },
+        {
+          "required": [
+            "task_id"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Observe Codex Turn",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "codex_steer",
+    "title": "Steer Active Codex Turn",
+    "description": "Append text to the same active Codex turn using turn/steer with an expected turn-id precondition. This does not create a new turn. Do not steer merely because reasoning is taking a long time or no new command has appeared; steer only for a semantic redirect or correction based on new evidence or changed user intent.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Active Codex thread."
+        },
+        "expected_turn_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Exact active turn id required by app-server."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200000,
+          "description": "Additional user text."
+        }
+      },
+      "required": [
+        "thread_id",
+        "expected_turn_id",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Steer Active Codex Turn",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "codex_respond",
+    "title": "Respond to Codex Request",
+    "description": "Answer one currently pending app-server server request by its original raw JSON-RPC id and exact thread/method scope. Supports the approval and item/tool/requestUserInput response contracts implemented by this facade. Unsupported or unknown methods fail locally and remain pending; do not guess a future response contract.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "description": "Original app-server JSON-RPC request id, preserving string or integer type."
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Exact pending-request thread scope."
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Exact turn scope when the pending request has one."
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Exact app-server request method."
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "acceptForSession",
+            "decline",
+            "cancel"
+          ],
+          "description": "Command or file approval decision."
+        },
+        "execpolicy_amendment": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "Command approval exec-policy amendment; encoded in app-server's native decision shape."
+        },
+        "answers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "answers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "answers"
+            ],
+            "additionalProperties": false
+          },
+          "description": "request_user_input question-id to answer-array mapping."
+        },
+        "response": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Exact generic result object for item/tool/requestUserInput; unsupported or future methods remain pending and are rejected locally."
+        }
+      },
+      "required": [
+        "request_id",
+        "thread_id",
+        "method"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "decision"
+          ]
+        },
+        {
+          "required": [
+            "execpolicy_amendment"
+          ]
+        },
+        {
+          "required": [
+            "answers"
+          ]
+        },
+        {
+          "required": [
+            "response"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Respond to Codex Request",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "codex_interrupt",
+    "title": "Interrupt Codex Turn",
+    "description": "Directly request turn/interrupt for the specified active Codex thread and turn. It does not stop or restart the Bridge or Codex app-server processes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Active Codex thread."
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Active Codex turn to interrupt."
+        }
+      },
+      "required": [
+        "thread_id",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Interrupt Codex Turn",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "codex_checkpoint",
+    "title": "Checkpoint Codex Supervision",
+    "description": "Optional, bounded supervisor cognition memory keyed to one native Codex thread_id; the key is not a permanent task identity and does not require future work to remain on that thread. Use it to protect the original goal, constraints, and acceptance plus concise supervisor state during long or complex supervision when context dilution or goal drift makes an external anchor worthwhile. Initialization is not tied to crossing a ChatGPT window or round, starting another Codex turn, or switching native threads; initialize early when a task is already expected to be sufficiently long or complex for that protection. Do not use for one-shot work, and do not turn duration into a hard threshold: elapsed time, observe/poll count, token count, or mere silence are not automatic triggers. Later updates remain semantic-event driven and require a material change in understanding or root cause, constraint or scope interpretation, steering decision, user-authorized amendment or effective goal, or acceptance judgment or an explicit decision not to accept yet. Before final acceptance of a checkpointed task, read it once to re-anchor the original goal, constraints, acceptance, and current supervisor frame. This tool is optional and uncoupled from all other tools. Store concise supervisor summaries only; never prompts, transcripts, raw events, command output, final answers, or raw event streams. Updates preserve only immutable original plus bounded previous/current supervisor state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "read",
+            "update"
+          ],
+          "description": "Read the checkpoint, or initialize/update it at a material supervisor decision point."
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Native Codex thread id; no second task identifier is created."
+        },
+        "original_goal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Concise original user goal. Required only on initialization and immutable thereafter."
+        },
+        "original_constraints": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Concise original constraints. Required only on initialization and immutable thereafter."
+        },
+        "original_acceptance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Concise original acceptance criteria. Required only on initialization and immutable thereafter."
+        },
+        "effective_goal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Current effective goal after legitimate user amendments; defaults to original_goal on initialization."
+        },
+        "current_amendment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Latest concise user-authorized requirement amendment, or null to clear it, without changing the immutable original."
+        },
+        "current_understanding": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Current concise root-cause or task understanding."
+        },
+        "current_decision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Current supervisor decision and why it matters."
+        },
+        "acceptance_status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Concise acceptance assessment, not a task lifecycle or job status."
+        },
+        "next_step": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "Single next supervision step."
+        }
+      },
+      "required": [
+        "action",
+        "thread_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Checkpoint Codex Supervision",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  }
+]

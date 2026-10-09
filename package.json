@@ -1,0 +1,29 @@
+{
+  "name": "local-codex-bridge",
+  "version": "6.2.0",
+  "private": true,
+  "description": "Local stdio MCP bridge for native Codex sessions.",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:staging": "tsc -p tsconfig.json --outDir .staging/dist && node scripts/copy-staging-fixtures.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:staging": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run test:staging && npm run test:execution-result && npm run test:local-http && npm run test:tray",
+    "test:local-http": "node --test --test-isolation=none .staging/dist/test/local-http-security.test.js",
+    "test:execution-result": "node --test --test-isolation=none .staging/dist/test/execution-result.test.js",
+    "test:tray": "powershell.exe -NoProfile -NonInteractive -File windows\\test-tray.ps1",
+    "test:control-center-dom": "node scripts/control-center-dom-smoke.mjs",
+    "test:control-center-native-detail": "node scripts/native-detail-scroll-dom-smoke.mjs",
+    "start": "node dist/src/index.js",
+    "test:staging": "npm run build:staging && node --test --test-isolation=none .staging/dist/test/runtime.test.js .staging/dist/test/app-server.test.js .staging/dist/test/app-server-adapter.test.js .staging/dist/test/agent-gateway.test.js .staging/dist/test/project-registry.test.js .staging/dist/test/ephemeral-codex-runner.test.js .staging/dist/test/ephemeral-scheduler.test.js .staging/dist/test/tools.test.js .staging/dist/test/mcp.test.js .staging/dist/test/checkpoint.test.js .staging/dist/test/ux-projection.test.js .staging/dist/test/model-guard.test.js .staging/dist/test/write-claims.test.js .staging/dist/test/backoff.test.js .staging/dist/test/dashboard-projection.test.js .staging/dist/test/dashboard-status-api.test.js .staging/dist/test/scheduled-tasks.test.js .staging/dist/test/native-history.test.js .staging/dist/test/task-progress-view.test.js .staging/dist/test/bridge-owned-native-tasks.test.js .staging/dist/test/control-center-read-model.test.js .staging/dist/test/native-state-reconciler.test.js .staging/dist/test/readable-task-title.test.js .staging/dist/test/scheduler.test.js .staging/dist/test/service-session.test.js .staging/dist/test/task-service.test.js .staging/dist/test/plugin-integration.test.js .staging/dist/test/tunnel-health.test.js .staging/dist/test/app-shell.test.js .staging/dist/test/updater.test.js .staging/dist/test/status-page-smoke.test.js .staging/dist/test/durable-task-store.test.js .staging/dist/test/task-status.test.js .staging/dist/test/output-directory.test.js .staging/dist/test/result-integrity.test.js .staging/dist/test/result-service.test.js .staging/dist/test/working-directory.test.js .staging/dist/test/port-registry.test.js .staging/dist/test/startup-supervisor.test.js .staging/dist/test/startup-status.test.js .staging/dist/test/webview-recovery.test.js .staging/dist/test/fault-injection.test.js .staging/dist/test/chaos-lifecycle.test.js",
+    "smoke:catalog": "node scripts/mcp-catalog-smoke.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,25 @@
+node_modules/
+dist/
+_codex_tmp/
+_render_tmp/
+_render_cache/
+_render_out/
+_render_home/
+.staging/
+artifacts/
+npm-debug.log*
+.env
+.env.*
+task_status.json
+task_records.json
+windows/local-settings.json
+# Restored/generated desktop binaries are not source-review material.
+windows/desktop/lib/
+windows/desktop/tunnel-client.exe
+*.exe.WebView2/
+*.dpapi
+**/auth.json
+**/runtime_key*
+**/tunnel-state.json
+**/desktop-settings.json
+.codex/

@@ -1,0 +1,1047 @@
+{
+  "generated_at": "2026-10-09T21:36:37.229Z",
+  "purpose": "local-source-review-not-public-release",
+  "binaries_included": false,
+  "git_history_included": false,
+  "tool_count": 13,
+  "files": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug-report.yml",
+      "bytes": 1184,
+      "sha256": "7c1ef700a4b59d488d8c95dbf91aae97f32e0215fc20dd7f2800b85054252ccf",
+      "transformation": null
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 3271,
+      "sha256": "85a1cc47c01a76200a58dc465054bd89e3e20229a3282ad49bee0ad9471793c6",
+      "transformation": null
+    },
+    {
+      "path": ".github/workflows/codeql.yml",
+      "bytes": 812,
+      "sha256": "e36008b3318c1e975447c4366792cdba1d3f66b032a9d9e8e72c0ed67c74418f",
+      "transformation": null
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 455,
+      "sha256": "2d05b367bd17c997516f3921a2307d38bdcc8c5bbbf635e1334fa61ac50d9e07",
+      "transformation": null
+    },
+    {
+      "path": ".gitleaksignore",
+      "bytes": 315,
+      "sha256": "7a2861fd9c6aeec8a10ee90e11592725754966ab63d203cbfb3d39ebfa670180",
+      "transformation": null
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 870,
+      "sha256": "355d2592ede24b4320e6d2acae800e6c4abd59b5399f2caf0430286910bdb7fd",
+      "transformation": null
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "bytes": 1523,
+      "sha256": "17b0eee67d08b3cea892724289bea8abfdc71303f64d251ed3ea96a282778605",
+      "transformation": null
+    },
+    {
+      "path": "CHATGPT-PROMPTS.zh-CN.md",
+      "bytes": 4824,
+      "sha256": "ba7397c3320e38a5501738b169d43fec16e1e112cfcf7a69ffe9e40859485eb2",
+      "transformation": null
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 1629,
+      "sha256": "82df2bdafe5c8e700c9d22e631da4f492efb126d95b96fde952c965d46601e25",
+      "transformation": null
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1109,
+      "sha256": "745c2dcaa70f3f108395b3645a922fe98d6c3f773c0090876473651d6a361341",
+      "transformation": null
+    },
+    {
+      "path": "LOCAL-HTTP.md",
+      "bytes": 1932,
+      "sha256": "54f272e5e93e8de4d78fabc8dee4cc20613775e4b1f5f73b8352867e0b5800a8",
+      "transformation": null
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 13697,
+      "sha256": "963d05fde1582cfe1d08326632d6fc5deba4ee371fdfe35aeb4cd3b1be0dcd52",
+      "transformation": null
+    },
+    {
+      "path": "package.json",
+      "bytes": 3168,
+      "sha256": "cd2fc336bf81ee20ea31734a337096636925004ac6dbb4a6a1b7b439850f487f",
+      "transformation": "discovery-and-deterministic-scripts-only"
+    },
+    {
+      "path": "PRIVACY-RELEASE.zh-CN.md",
+      "bytes": 2913,
+      "sha256": "ca9f57394d210331baa5c955094a829813cf7151f61616537b6f03dc2bb23ee6",
+      "transformation": null
+    },
+    {
+      "path": "projects.json.example",
+      "bytes": 221,
+      "sha256": "5b2b560f225fd3f1a828f08be659a2a7feee74ec2f1e5214b68d31bf8650bbbb",
+      "transformation": null
+    },
+    {
+      "path": "README.md",
+      "bytes": 6692,
+      "sha256": "772193425b774e45ca4e2070f6599e90c8c813a298f2cd54cdc5c8072da754ec",
+      "transformation": null
+    },
+    {
+      "path": "RELEASE-GATES.md",
+      "bytes": 2388,
+      "sha256": "2ada0ec032bba4020bd309f6ba0b796a59747afdac8d13239b061284611e1d40",
+      "transformation": null
+    },
+    {
+      "path": "RELEASE-NOTES-6.2.0.md",
+      "bytes": 2620,
+      "sha256": "cd2db897c321b1afb26958e376d6581565b6d908fa493554de6423b11a8bed1c",
+      "transformation": null
+    },
+    {
+      "path": "scripts/build-hardened-tunnel.ps1",
+      "bytes": 6861,
+      "sha256": "032a79b6bf5a12fe06ec1167836047a2e82b0ee2f1708d8ad9161cf9503f1182",
+      "transformation": null
+    },
+    {
+      "path": "scripts/build-release-package.ps1",
+      "bytes": 4298,
+      "sha256": "b78221c89baea195f197d722050d2c51ac219b8bb0ba4a14d999ba24eea14fc8",
+      "transformation": null
+    },
+    {
+      "path": "scripts/build-review-package.ps1",
+      "bytes": 5569,
+      "sha256": "72694c464fe87b561edcf2c5fa75d0ae636159a2d9281c8c52ece75241d35ac6",
+      "transformation": null
+    },
+    {
+      "path": "scripts/control-center-dom-smoke.mjs",
+      "bytes": 5594,
+      "sha256": "ac91d9aa89b3cbd1b68dc5f159379e46cb0d6e7e226f5d0fd1fca880cbd53e4a",
+      "transformation": null
+    },
+    {
+      "path": "scripts/copy-staging-fixtures.mjs",
+      "bytes": 725,
+      "sha256": "f5049f4ae0df235906287bbd7a82ebc3454d07f68ab15d743525e9423243a659",
+      "transformation": null
+    },
+    {
+      "path": "scripts/mcp-catalog-smoke.mjs",
+      "bytes": 4688,
+      "sha256": "adad2162e50740edc26335fe301dcc35f7f6a249fd0d452202ebe28244521d02",
+      "transformation": null
+    },
+    {
+      "path": "scripts/native-detail-scroll-dom-smoke.mjs",
+      "bytes": 4613,
+      "sha256": "972e10b5102b0ee7a7e0b0997d99dbc4b5fae3292634e0b01d85edfe9a1364bd",
+      "transformation": null
+    },
+    {
+      "path": "scripts/restore-go.ps1",
+      "bytes": 750,
+      "sha256": "2878c4a9057dd8b91d8f7f497a3c9985ef80adb47135dbb33b795e1fc783a2ca",
+      "transformation": null
+    },
+    {
+      "path": "scripts/restore-secret-scanner.ps1",
+      "bytes": 850,
+      "sha256": "1e8e1703e0a238cc8a4ca5c289e7496069fa56638c83083b3966d8c29bd46949",
+      "transformation": null
+    },
+    {
+      "path": "scripts/restore-webview2.ps1",
+      "bytes": 2066,
+      "sha256": "6d5e3ce3c44f6d69f238cb7bd591b479d881b23b2c8ff47113d392a2de82f2f0",
+      "transformation": null
+    },
+    {
+      "path": "scripts/test-release-docs.ps1",
+      "bytes": 2208,
+      "sha256": "1ae59b62a6c541a591d6796745b1601e800eb0bd59d4b264da4e1358328e5dd3",
+      "transformation": null
+    },
+    {
+      "path": "scripts/test-release-install.ps1",
+      "bytes": 2501,
+      "sha256": "f15e724579555ef3f1f29107dac90a28b3645200f9e5a4187a888867893c1ca3",
+      "transformation": null
+    },
+    {
+      "path": "scripts/verify-release-package.ps1",
+      "bytes": 3247,
+      "sha256": "0d642367d0f3b6d1a8f302294d6cbf1e9abbead1671c6685bf1f85c635d92a69",
+      "transformation": null
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 2060,
+      "sha256": "274f49bef22d8686bc53511115e99e43286597759d1d5e26bb3b28fe70e8be91",
+      "transformation": null
+    },
+    {
+      "path": "src/agent-gateway.ts",
+      "bytes": 19413,
+      "sha256": "71c911394d55cf5590cb59d5823917a7f3473bd2f03a9ada2bbacebc8e174e06",
+      "transformation": null
+    },
+    {
+      "path": "src/app-server-adapter.ts",
+      "bytes": 6823,
+      "sha256": "bed62ab1dfecd2e00a9d01655d7b5c4b6e9b46681dbef399f4284af00314aa67",
+      "transformation": null
+    },
+    {
+      "path": "src/app-server.ts",
+      "bytes": 26163,
+      "sha256": "b821039d759ed3c44b5d2df6607a85b5f87c867700ea86d1516b666f7fbc64f3",
+      "transformation": null
+    },
+    {
+      "path": "src/app-shell.ts",
+      "bytes": 216,
+      "sha256": "d48bb7ea600fbd82e74515cd2662b6fb73a76b6cdb664103ec262e10ff5905d4",
+      "transformation": null
+    },
+    {
+      "path": "src/backoff.ts",
+      "bytes": 682,
+      "sha256": "cf83f929418a3dad4374fdd34abf51bb651ebb924a5823bea443fd355424fcec",
+      "transformation": null
+    },
+    {
+      "path": "src/bridge-owned-native-tasks.ts",
+      "bytes": 9300,
+      "sha256": "b1d1a7a0f2a0f23cece943d10c9e19cfcc1d234a77e3c6bc2e7645ec801877c8",
+      "transformation": null
+    },
+    {
+      "path": "src/build-identity.ts",
+      "bytes": 912,
+      "sha256": "f5553352d6d2b6812ccd7333af5e3da3fd8c31d63f76c8d976fdcedd713dc448",
+      "transformation": null
+    },
+    {
+      "path": "src/checkpoint.ts",
+      "bytes": 13435,
+      "sha256": "d4760f3cd84cf02e2e8966067d703dbb122127d67a69133ab78a2c9eb551ca28",
+      "transformation": null
+    },
+    {
+      "path": "src/codex-task-sync.ts",
+      "bytes": 8979,
+      "sha256": "a19bfe923a754519f94bf18452d551403cd20eb87f523065504daafc13143685",
+      "transformation": null
+    },
+    {
+      "path": "src/control-center-read-model.ts",
+      "bytes": 12326,
+      "sha256": "3529a60617eaa919213e532fa58ce2245263c3ebb99fd3c3961b393a2cfe928a",
+      "transformation": null
+    },
+    {
+      "path": "src/control-center-shell.ts",
+      "bytes": 114185,
+      "sha256": "abac7c3ee1fb9f3c26f6fb41351d1c5939c32b837de60fee2bf49e4d51daeb9d",
+      "transformation": null
+    },
+    {
+      "path": "src/dashboard-projection.ts",
+      "bytes": 5802,
+      "sha256": "e81d90813cc3eed002f6395eec17bd62caa0aeadb57e37204d6eb6fedd7c967c",
+      "transformation": null
+    },
+    {
+      "path": "src/ephemeral-codex-runner.ts",
+      "bytes": 29831,
+      "sha256": "227552d07ff31e4963abcec4dc9a66e787dbe57bda7b0129a971a761c14c8c94",
+      "transformation": null
+    },
+    {
+      "path": "src/ephemeral-scheduler.ts",
+      "bytes": 22284,
+      "sha256": "a7e7b483acecdb5380ea3cdf87506326840e9020663e358e64f9b93990758470",
+      "transformation": null
+    },
+    {
+      "path": "src/execution-result.ts",
+      "bytes": 3812,
+      "sha256": "fdafd36170fe427b344a8337a7c520df90f5d8b86e219c9b5c84e15c6e7f82a7",
+      "transformation": null
+    },
+    {
+      "path": "src/index.ts",
+      "bytes": 6826,
+      "sha256": "9e9ad950f8ae222ea19b5420cf147ae9313a562b7d17a049cc07d79407c062d7",
+      "transformation": null
+    },
+    {
+      "path": "src/local-http-security.ts",
+      "bytes": 3567,
+      "sha256": "702e75262791bdd96fd6b5d2ca9b4cdf63d22bc8496b679aa63cfa300339e8e9",
+      "transformation": null
+    },
+    {
+      "path": "src/mcp-health.ts",
+      "bytes": 1235,
+      "sha256": "9e78ca6985c3eb3ffe05aeb1ab759c499d58621df9a713766c24bcc61f868e5f",
+      "transformation": null
+    },
+    {
+      "path": "src/mcp.ts",
+      "bytes": 13135,
+      "sha256": "6e8206ee254d34a47a2acd4135115f837425e63892fb860537b0af81bd936e4b",
+      "transformation": null
+    },
+    {
+      "path": "src/model-guard.ts",
+      "bytes": 11982,
+      "sha256": "be3d0f69f2561b43b19e358144f8a49a769b5688cda959bb9f1ea71da47d57fd",
+      "transformation": null
+    },
+    {
+      "path": "src/native-history.ts",
+      "bytes": 8070,
+      "sha256": "72cd7c819b81503fcf9801245dc765063cbb5ccd4f7a8e3a2a174b1fb158ed4e",
+      "transformation": null
+    },
+    {
+      "path": "src/native-state-reconciler.ts",
+      "bytes": 14909,
+      "sha256": "2c037fdafecf73e22a049172bdec5b020491df32134076f49953cb4661fe6c7c",
+      "transformation": null
+    },
+    {
+      "path": "src/output-directory.ts",
+      "bytes": 3398,
+      "sha256": "23131a886e7380b9b1224ba2ad3673244ce92046b19b0f5f1af4b08992a660fe",
+      "transformation": null
+    },
+    {
+      "path": "src/port-registry.ts",
+      "bytes": 3179,
+      "sha256": "43f17cd910281c2152a0171e0974d72d5a806958678c8f7010d3e54af7e72902",
+      "transformation": null
+    },
+    {
+      "path": "src/project-registry.ts",
+      "bytes": 6829,
+      "sha256": "50cae89ac6a846a4a0b100512e9721898865c797cd0c79b6df68489c48a2aa2c",
+      "transformation": null
+    },
+    {
+      "path": "src/readable-task-title.ts",
+      "bytes": 6963,
+      "sha256": "fb5e226c9cbed028e61216bb42c096e25fbd2741b2c76e7a1a855049cfac2b2f",
+      "transformation": null
+    },
+    {
+      "path": "src/result-integrity.ts",
+      "bytes": 7759,
+      "sha256": "f54129c6214044f6028cb2ecdaf5443dcb8311a9df3efe41906827f8b6a89fb5",
+      "transformation": null
+    },
+    {
+      "path": "src/result-manifest.ts",
+      "bytes": 4555,
+      "sha256": "a942c0e4b91cfc7c10e754582db9da8037537fe449c46da6eb9b45ccd03d3fdb",
+      "transformation": null
+    },
+    {
+      "path": "src/result-service.ts",
+      "bytes": 3677,
+      "sha256": "b4151e9ef706ee49d6c5d1dc6cebdef74d1a7f24e4304a23356385b9a71b56f1",
+      "transformation": null
+    },
+    {
+      "path": "src/runtime.ts",
+      "bytes": 30944,
+      "sha256": "936e6e09c929b6d76136fc75c09befe02cfd5aea2f7410b1973f3b584f09d233",
+      "transformation": null
+    },
+    {
+      "path": "src/scheduled-tasks.ts",
+      "bytes": 5828,
+      "sha256": "7237b664f48bc0f6417de763cf7ded3f88c29a244bf0842d410e8523379b00fd",
+      "transformation": null
+    },
+    {
+      "path": "src/scheduler.ts",
+      "bytes": 24813,
+      "sha256": "fb0dce7577f98ad4f924c71b495ac4f1494633ddeb5721bd68a62b254390b8e6",
+      "transformation": null
+    },
+    {
+      "path": "src/service-session.ts",
+      "bytes": 22060,
+      "sha256": "5a9155e110ae67a7b06eebcf87d3cd9f8884a92d28cfca035cb910ed7fe6fb45",
+      "transformation": null
+    },
+    {
+      "path": "src/session-mapping.ts",
+      "bytes": 1026,
+      "sha256": "ed5068d7e0bb84a30f393e35061e1dc39a10e0323e9d98ff081adb62afd15626",
+      "transformation": null
+    },
+    {
+      "path": "src/startup-supervisor.ts",
+      "bytes": 3250,
+      "sha256": "de3849dec486d68edecbc491e6ab3896834a125456b45a10700c64b5c2f5ff28",
+      "transformation": null
+    },
+    {
+      "path": "src/status-page.ts",
+      "bytes": 44628,
+      "sha256": "3238c0174b4bd85a47c06090bcb9df3d7ed0273b7a90e1864901a814f42bd775",
+      "transformation": null
+    },
+    {
+      "path": "src/status-server.ts",
+      "bytes": 59776,
+      "sha256": "c1dcd22b953b191bdcdd879fcbabf2fa0ae88e9bea12094e5dad228fb138989f",
+      "transformation": null
+    },
+    {
+      "path": "src/task-definition.ts",
+      "bytes": 4322,
+      "sha256": "9e0ff95a81627fa054d3f8d8bab2fb121c99c16607443193a1d6214c74e0ca5d",
+      "transformation": null
+    },
+    {
+      "path": "src/task-events.ts",
+      "bytes": 10397,
+      "sha256": "6f614c53ff20f383a882c8641270c3871eae46b5e54d367c35752e54f9681187",
+      "transformation": null
+    },
+    {
+      "path": "src/task-manager.ts",
+      "bytes": 69148,
+      "sha256": "66866640d0da1145ab68ef8b895cef5ca5dcfc12c6611358750d5ab26c2da471",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "src/task-progress-view.ts",
+      "bytes": 11355,
+      "sha256": "232790f956d888f59ecdf6bcbafbec21a52cda37e5774806c66e6a05d9fdd15f",
+      "transformation": null
+    },
+    {
+      "path": "src/task-runtime.ts",
+      "bytes": 6072,
+      "sha256": "14468d67e8c781a44ceb063409fd6ee40e07ec148dd29baea8cb09e711ecf9ae",
+      "transformation": null
+    },
+    {
+      "path": "src/task-service.ts",
+      "bytes": 4587,
+      "sha256": "7dfd8cf5a48299a3ccfda930b5528ff6a6ff95998839053ef613cb94da7b5b4f",
+      "transformation": null
+    },
+    {
+      "path": "src/task-status.ts",
+      "bytes": 8606,
+      "sha256": "a8ba997d5ee840effd371d81a9416ce1260f82012b7fd11a245f68643ba8dd1b",
+      "transformation": null
+    },
+    {
+      "path": "src/task-store.ts",
+      "bytes": 738,
+      "sha256": "5eca3c9305ad51e416fd171ac6bcfa55aa1f0b0733ae1f75f4e41bf1228a9ab7",
+      "transformation": null
+    },
+    {
+      "path": "src/tools.ts",
+      "bytes": 58681,
+      "sha256": "1b17a3ef06766a699dce8ba85f6f27f2ae050bc0461aca7d15cb1b71dcc2ab34",
+      "transformation": null
+    },
+    {
+      "path": "src/tunnel-health.ts",
+      "bytes": 7105,
+      "sha256": "25d5b456be29e983762c875636b00745a02173ddd6d43808a35aab24bd7c12e4",
+      "transformation": null
+    },
+    {
+      "path": "src/updater.ts",
+      "bytes": 3580,
+      "sha256": "7de40f67174efe88ff40967985dbbccadedc1ef5196a630ce303669b09abfb8c",
+      "transformation": null
+    },
+    {
+      "path": "src/ux-projection.ts",
+      "bytes": 3203,
+      "sha256": "9ba7b67f499c8a73ca89916675181f8e57feb893929fbc7a5f6565c4f10c3bad",
+      "transformation": null
+    },
+    {
+      "path": "src/worker-pool.ts",
+      "bytes": 3268,
+      "sha256": "0420f3fd6219602184310973f94d1699f13dff83555e86fd61ea0ab438382f5e",
+      "transformation": null
+    },
+    {
+      "path": "src/working-directory.ts",
+      "bytes": 9747,
+      "sha256": "f3e7e1a2de1f8c7d754def9f5231871582d9fc103114a6c75abf6601588bc7a7",
+      "transformation": null
+    },
+    {
+      "path": "src/write-claims.ts",
+      "bytes": 4812,
+      "sha256": "1cc45b6092f586e4012d675f354f7edb8ef1acf8cb4012243ef01dbdac057ffd",
+      "transformation": null
+    },
+    {
+      "path": "START-HERE.zh-CN.md",
+      "bytes": 8910,
+      "sha256": "a2861c4fc6f159f3884885e13c5eef18887e8d707252cea2cfe00d43b846dd19",
+      "transformation": null
+    },
+    {
+      "path": "test/agent-gateway.test.ts",
+      "bytes": 5903,
+      "sha256": "f9675f826dcab6905c4b0f9fe86137173bd73b2dd4908273f02c60e9f2c4e377",
+      "transformation": null
+    },
+    {
+      "path": "test/app-server-adapter.test.ts",
+      "bytes": 2883,
+      "sha256": "c921778482dc196b07b7b282dcd17d3a69b336df16fc7b2f6e24a62f5d11ab25",
+      "transformation": null
+    },
+    {
+      "path": "test/app-server.test.ts",
+      "bytes": 22780,
+      "sha256": "001edd625c1a795eedbf0fa19f83c10023e9c692caa44b4971bc4a65c4910d99",
+      "transformation": null
+    },
+    {
+      "path": "test/app-shell.test.ts",
+      "bytes": 10627,
+      "sha256": "f4c5ddaa1972a681e14f4527c65053d3c80d340de339912ec661f36e1114d00e",
+      "transformation": null
+    },
+    {
+      "path": "test/backoff.test.ts",
+      "bytes": 652,
+      "sha256": "1ec9e8e72215fefdcb1078c8c34f2e40013c1f66334801f1a8d1a2faf5a20a98",
+      "transformation": null
+    },
+    {
+      "path": "test/bridge-owned-native-tasks.test.ts",
+      "bytes": 5513,
+      "sha256": "41d2f16e379fd90f4884fc7cb016e11a3782326953d65d4a362363b9fb58767a",
+      "transformation": null
+    },
+    {
+      "path": "test/browser-safe-status-server.ts",
+      "bytes": 2453,
+      "sha256": "5239fce06f2b5dffff9a84d5421eb817154f35c712dff3775a2dd274d381d752",
+      "transformation": null
+    },
+    {
+      "path": "test/chaos-lifecycle.test.ts",
+      "bytes": 844,
+      "sha256": "d8efc74f95e0b284b4377c6386e1a151a8ce4cc029711e2679bc259a3ee53cd4",
+      "transformation": null
+    },
+    {
+      "path": "test/checkpoint.test.ts",
+      "bytes": 9177,
+      "sha256": "3876b5dbb963b3f42e0612130381b1c3603e64576f2b73085949634b2b3efae8",
+      "transformation": null
+    },
+    {
+      "path": "test/control-center-read-model.test.ts",
+      "bytes": 3943,
+      "sha256": "1d21579b4f8b1cd63d011623cae63aac24daa26ded2a8aaa0a774bca7cb7fbc0",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/dashboard-projection.test.ts",
+      "bytes": 9232,
+      "sha256": "a6525b98ea69f3c48102ee72824b907fd87dcafb7dc8a867e7eb42f2cb0fc126",
+      "transformation": null
+    },
+    {
+      "path": "test/dashboard-status-api.test.ts",
+      "bytes": 21026,
+      "sha256": "6b0c1cdcb5ebce714297e14bc222bbc8a1fa7d11ba4b90d5434dcf327913a48d",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/duplicate-request-codex.mjs",
+      "bytes": 1589,
+      "sha256": "0195e331f539400b05bd3d351671b839e9c5f68945bfecdff0e7570e59658d7b",
+      "transformation": null
+    },
+    {
+      "path": "test/durable-task-store.test.ts",
+      "bytes": 6732,
+      "sha256": "d2dadb1a89141eac404f8588c0b9decc471c3e13493bb9d5246e0ff109e148fe",
+      "transformation": null
+    },
+    {
+      "path": "test/ephemeral-codex-runner.test.ts",
+      "bytes": 5008,
+      "sha256": "17d47d8562b113ff344310cebcab5b2c84c7de9e3cf54b72d7c0844f69b09b1c",
+      "transformation": null
+    },
+    {
+      "path": "test/ephemeral-scheduler.test.ts",
+      "bytes": 9463,
+      "sha256": "7419ea64ccdecee2fb3149147b067ec872370e1b85292233ec800883fc8c9927",
+      "transformation": null
+    },
+    {
+      "path": "test/execution-result.test.ts",
+      "bytes": 7363,
+      "sha256": "a1ef568e4b287d8e66370e82ba9fc0f3dd213ff1166bc92a453c2a26b7487a66",
+      "transformation": null
+    },
+    {
+      "path": "test/fake-codex.mjs",
+      "bytes": 4603,
+      "sha256": "3b52a24105b7bae4e387425ae4ac870e8f97517a0cd8b2bd8508fb0cc084a984",
+      "transformation": null
+    },
+    {
+      "path": "test/fault-injection.test.ts",
+      "bytes": 1283,
+      "sha256": "8bca4a7684f40767d9dd5c21b4f639d6a99da5a1b21ff3f983b28c1d0f1412ef",
+      "transformation": null
+    },
+    {
+      "path": "test/late-response-codex.mjs",
+      "bytes": 3667,
+      "sha256": "5715579c1dac25c0fade2761bc818c57b8f63edc655140cda154729c36abf002",
+      "transformation": null
+    },
+    {
+      "path": "test/local-http-security.test.ts",
+      "bytes": 9204,
+      "sha256": "d5abc6528e28572f3de9cd9788f66b57b4f2de682a48e08ce1249b0fe9306310",
+      "transformation": null
+    },
+    {
+      "path": "test/mcp.test.ts",
+      "bytes": 24925,
+      "sha256": "f30995893e3cec113313add8ac5c2a8f9318686870abb2c90344cff9a08b49e4",
+      "transformation": null
+    },
+    {
+      "path": "test/model-guard.test.ts",
+      "bytes": 4463,
+      "sha256": "ed2de8b1fb17b39e3d976f2d8a07ec2cc699a5b8679c7fb6d373aa56de1a844e",
+      "transformation": null
+    },
+    {
+      "path": "test/native-history.test.ts",
+      "bytes": 6285,
+      "sha256": "1c89b3eb9291764423f75af91d1854bf36b95517e3ccb383a835c5a80c692b30",
+      "transformation": null
+    },
+    {
+      "path": "test/native-state-reconciler.test.ts",
+      "bytes": 11164,
+      "sha256": "12e91aff79543efa76d782eccbab1d1e17e6cedc92776b3a46419d7aab07c558",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/output-directory.test.ts",
+      "bytes": 1391,
+      "sha256": "1ef317ef5dcaf56ea137ad5a8648b3c092c7e55de98cc8ee0f1ede86c3a2115b",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/pending-write-codex.mjs",
+      "bytes": 741,
+      "sha256": "e9ce3d7a7252c5626b4c2b762714d3cda761be335a15c93240eff7041181187b",
+      "transformation": null
+    },
+    {
+      "path": "test/plugin-integration.test.ts",
+      "bytes": 2977,
+      "sha256": "37cb8c97524c5082dfe2c3c0602a35a51d9a081dc2db2a1cff5f592515d628f1",
+      "transformation": null
+    },
+    {
+      "path": "test/port-registry.test.ts",
+      "bytes": 1822,
+      "sha256": "0816a7f4129eea68dcfff8a34140f683065f2282dcc8d74049561ab859935173",
+      "transformation": null
+    },
+    {
+      "path": "test/project-registry.test.ts",
+      "bytes": 3570,
+      "sha256": "86b54addba604343004ed106b5f4d692e55f56a2dba5a13253f48b0ddd7c7961",
+      "transformation": null
+    },
+    {
+      "path": "test/readable-task-title.test.ts",
+      "bytes": 5299,
+      "sha256": "dad1fbc81c22686eceddd91d5b6ba73344526260d9ee21567d28fc3e5152d7d0",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/result-integrity.test.ts",
+      "bytes": 6016,
+      "sha256": "3d23ecb7a8c1f5dcfda5b4d6f1d293a15725d52d5b89faed0c18da2dbe829ac2",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/result-service.test.ts",
+      "bytes": 3025,
+      "sha256": "8da45ccd8b74577cbae2783b1d6087e70068ab1ec0a235f14d24b9519a6914b0",
+      "transformation": null
+    },
+    {
+      "path": "test/runtime.test.ts",
+      "bytes": 19114,
+      "sha256": "88c2bd980465b2b7a5b7c12e15719cfe445b7a8c4fe32fcaf5293e13611da0a2",
+      "transformation": null
+    },
+    {
+      "path": "test/scheduled-tasks.test.ts",
+      "bytes": 6832,
+      "sha256": "19238d7ea95257735095ded48a464d3a6545fa0eab8f9a634b142b0e98cf1acf",
+      "transformation": null
+    },
+    {
+      "path": "test/scheduler.test.ts",
+      "bytes": 14105,
+      "sha256": "04f75c60efc96b52d12ea92abe3e09c0641375a47f95b4016d4dfb95f5e8eeeb",
+      "transformation": null
+    },
+    {
+      "path": "test/service-session.test.ts",
+      "bytes": 10051,
+      "sha256": "9d678e15a6101c9bdd0a2a47eea54f272d8cf4d9b0edf171737e2977dca36594",
+      "transformation": null
+    },
+    {
+      "path": "test/startup-status.test.ts",
+      "bytes": 2159,
+      "sha256": "08565a933df487868722e85503d84e83cd62dc7b473dbc8f73917990a1f77e08",
+      "transformation": null
+    },
+    {
+      "path": "test/startup-supervisor.test.ts",
+      "bytes": 1358,
+      "sha256": "7d8a649d20852883032e4ed3a21937e88b6ccbf46f2424ee6a19c418a39716a1",
+      "transformation": null
+    },
+    {
+      "path": "test/status-page-smoke.test.ts",
+      "bytes": 10672,
+      "sha256": "130c74eb2126c61f0f026893bb1172974a2e342e9b9d3778e3a087dfa67895fc",
+      "transformation": null
+    },
+    {
+      "path": "test/task-progress-view.test.ts",
+      "bytes": 4028,
+      "sha256": "fd71fa8534dbbc132a9b3decb9689b1752ef3f893a19ea197666308e6a141cd1",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/task-service.test.ts",
+      "bytes": 7570,
+      "sha256": "aa83e65cf7ec8092c3c06c8d36cf80a7bd787ddf090602917ebfcc9f1403923e",
+      "transformation": null
+    },
+    {
+      "path": "test/task-status.test.ts",
+      "bytes": 32908,
+      "sha256": "ee0791451b00928c824b7996d2604d1119a54065a4a86cab6a79b8d24425c9a3",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/timeout-codex.mjs",
+      "bytes": 707,
+      "sha256": "21f7691b4226d9dab65c3f4a9f879b3a58c6ef4290b11c84fd77972ed31c4004",
+      "transformation": null
+    },
+    {
+      "path": "test/tools.test.ts",
+      "bytes": 14691,
+      "sha256": "cc5d1e54a2d8656b72348f4c83192cd4897fcf9f16d5a876a28ed032665aa5ab",
+      "transformation": null
+    },
+    {
+      "path": "test/tunnel-health.test.ts",
+      "bytes": 4623,
+      "sha256": "31278a85375e186a2eeca4ff0d299b43afb1aad1db53c77ccab43832dc84bd2b",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/updater.test.ts",
+      "bytes": 1417,
+      "sha256": "5c140664d20014758cf0b09b764ba8e57669fc43155a87e20dde071877c87e18",
+      "transformation": null
+    },
+    {
+      "path": "test/ux-projection.test.ts",
+      "bytes": 3864,
+      "sha256": "2eaaab407f929408d2027e246dc73918cae7ce3f319e934053dd4243d981ecff",
+      "transformation": null
+    },
+    {
+      "path": "test/webview-recovery.test.ts",
+      "bytes": 1518,
+      "sha256": "b809028c40c891bbcffb0f458a652c7eb0e7ab10e95ddfa28956e39793c275cb",
+      "transformation": null
+    },
+    {
+      "path": "test/working-directory.test.ts",
+      "bytes": 5653,
+      "sha256": "b3aa87458669704a5a534c8b3568adf562599a2ef4d58c551bda5adc930b4788",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "test/write-claims.test.ts",
+      "bytes": 1384,
+      "sha256": "e7b0724821f9258236c8ed73359cfe095f5603e9d86e6c83f9309a2ea710c95d",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "THIRD-PARTY.md",
+      "bytes": 3778,
+      "sha256": "fa2e22f3085b84661c6b2516dd890230eded3114a5f7a189270d98c4f8d78880",
+      "transformation": null
+    },
+    {
+      "path": "tool-catalog.json",
+      "bytes": 25576,
+      "sha256": "98ee07774bde8722e4ce024c973762e3ce192d2b4912ed603e876fc7188642bd",
+      "transformation": null
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 554,
+      "sha256": "73c9b898011a2da32d3bf331ea99ad39425ccb5f986d573912ef9b5c36ddb75b",
+      "transformation": null
+    },
+    {
+      "path": "TUNNEL-SETUP.md",
+      "bytes": 4451,
+      "sha256": "c605b6d1acc348a45163db3553a259cb9c36fabc54a0f03539242b4d0706ace6",
+      "transformation": null
+    },
+    {
+      "path": "USER-GUIDE.zh-CN.md",
+      "bytes": 11491,
+      "sha256": "59608f91c2ab6eb9de9877bf285100f89855867723fc94628b3a6a1512ca9768",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/BridgeCodexAppHost.cs",
+      "bytes": 66205,
+      "sha256": "438b391f164a1df3ff740c18efb0a4dbc98e1f295a0091b2cc2c8761eba243a4",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/build-desktop.ps1",
+      "bytes": 5054,
+      "sha256": "8c21640bcf2f76aa6f245fed8fd4b6f49619988bf98c4e18903801b60660eb30",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/install-portable.ps1",
+      "bytes": 2859,
+      "sha256": "cffd199d580ecfb1f4aa52515c0eb1e352bc0cc3238520e01cb55c58c76f1904",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/install.cmd",
+      "bytes": 609,
+      "sha256": "8b9d5ea1c875cb3b34b18f900b1b01d7f706b71ce27e93241bdd38ee71e97b95",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/LocalCodexBridge.Desktop.cs",
+      "bytes": 189514,
+      "sha256": "08459578258cbd3ace3b8e5dd49cfd0bde36ec8e7a2eb8bda4e55fbb3b46ec2e",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/LocalCodexBridge.Desktop.manifest",
+      "bytes": 859,
+      "sha256": "58941c47fb4937ad6e512097baffc3ff43488f08a9cbd0cfd130ee050f996f11",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/package-portable.ps1",
+      "bytes": 5187,
+      "sha256": "d7b72aaae7ded6884444c8d3effb78c4e3b413b1660f69c8e39a084e5a7abca4",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/test-desktop.ps1",
+      "bytes": 13931,
+      "sha256": "aa9e081f8951e062b2ee8bbfd51318075de92d066a3931e02fab064d763fed91",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/test-portable.ps1",
+      "bytes": 2143,
+      "sha256": "b7ef5884be0a1c41d93ac00ff391f62ed1c428f756308e2455b4466e0f7c4877",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/test-preview-host.ps1",
+      "bytes": 11301,
+      "sha256": "83db8b2b48821133c1014d73c378cf12a37e83e0e86d3ea0838267f9be5c94aa",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/test-preview-lifecycle.ps1",
+      "bytes": 12230,
+      "sha256": "59e66c6a1174ddef7691575cd6c71c32e1bc621e034bfdd5d4eeef718eb36740",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/test-preview-tunnel-recovery.ps1",
+      "bytes": 7487,
+      "sha256": "0569419c1decd9211026c50f9626b1e0c43fcc259ea4261da6840029ebab1c57",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/tunnel-client.version.txt",
+      "bytes": 48,
+      "sha256": "2f6947a8b6f6b5908e13ce063c85217ea02890b565b72981c50047386330edbc",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/tunnel-profile.template.yaml",
+      "bytes": 317,
+      "sha256": "66cd53db6f5eb023820abdccb15085e3ba574a19b1457cb7c9ea0cff74e37fc7",
+      "transformation": "neutralized-local-fixture-or-tunnel-binding"
+    },
+    {
+      "path": "windows/desktop/update-manifest.local.example.json",
+      "bytes": 263,
+      "sha256": "cd212f585dc6ea774b60aa538a8819f1dd7416e74d2ec94c0bc9ab9b53caa225",
+      "transformation": null
+    },
+    {
+      "path": "windows/desktop/WEBVIEW2-SDK-VERSION.txt",
+      "bytes": 166,
+      "sha256": "e29f0fbab35e9a995d2aff1cb5e87942f423b33bb43c069553ebe3c694727dfc",
+      "transformation": null
+    },
+    {
+      "path": "windows/icons/attention.ico",
+      "bytes": 9622,
+      "sha256": "f3113e1369c925ee5d0ba0eb467aef373dc39ba960f3a0b8408ea0f5d08fbedb",
+      "transformation": null
+    },
+    {
+      "path": "windows/icons/error.ico",
+      "bytes": 9622,
+      "sha256": "674643fd8d84759833631a5e2279410cd56b2a8e762eb0b240f0c803c8b148cb",
+      "transformation": null
+    },
+    {
+      "path": "windows/icons/ready.ico",
+      "bytes": 9622,
+      "sha256": "57dc917fb45619516b19168cc35cb74bac5641bb0b549a7ec9df0788a6d7029c",
+      "transformation": null
+    },
+    {
+      "path": "windows/icons/starting.ico",
+      "bytes": 9622,
+      "sha256": "ca6ea8c94795a7278ec8f50b6661ff286840f0d000dba963eb5dda48dd5a641e",
+      "transformation": null
+    },
+    {
+      "path": "windows/icons/stopped.ico",
+      "bytes": 9622,
+      "sha256": "6712a2b76fb88626691710f49990a545cf9d080d9e1810a94ed3cd801e22876e",
+      "transformation": null
+    },
+    {
+      "path": "windows/local-settings.example.json",
+      "bytes": 562,
+      "sha256": "94d0b4a3fdca3b5dd39115c8fd22ee76dc8a10ed893c0b6e4c03e923f031766e",
+      "transformation": null
+    },
+    {
+      "path": "windows/LocalCodexBridgeTray.cmd",
+      "bytes": 203,
+      "sha256": "4a061a2fb1e735ecfda942f840b3ec5a5a61133bfeefe989b4d37b1214231b58",
+      "transformation": null
+    },
+    {
+      "path": "windows/LocalCodexBridgeTray.Debug.cmd",
+      "bytes": 203,
+      "sha256": "862ce340ab3e34072efbe597e994cd725f2c7777a2bdbcac027079d184b90f7c",
+      "transformation": null
+    },
+    {
+      "path": "windows/LocalCodexBridgeTray.ps1",
+      "bytes": 27310,
+      "sha256": "45bb8a9bec4ff9464f5eeb5198d2488dd4727618579288e879d2596ec3774e99",
+      "transformation": null
+    },
+    {
+      "path": "windows/LocalCodexBridgeTray.vbs",
+      "bytes": 612,
+      "sha256": "6425fc0e793fed9006039f41d5834341c2f5b154e21e522ec5fbcc942b694ce3",
+      "transformation": null
+    },
+    {
+      "path": "windows/LumenCodexControlV2Tray.cmd",
+      "bytes": 52,
+      "sha256": "1ed71c250f120f1278e5e66c362d2d4fc092c87e4256db057bc029976e357b12",
+      "transformation": null
+    },
+    {
+      "path": "windows/LumenCodexControlV2Tray.Debug.cmd",
+      "bytes": 58,
+      "sha256": "f93253394ffcf6a7056c3a7cefdf26a64d56a93771bfa2aa52015f0e2907f62c",
+      "transformation": null
+    },
+    {
+      "path": "windows/LumenCodexControlV2Tray.ps1",
+      "bytes": 457,
+      "sha256": "c19fa9dfee1a68c5513a8a0b8a4c10261b298432a658f46b5fccb2b6269befd2",
+      "transformation": null
+    },
+    {
+      "path": "windows/LumenCodexControlV2Tray.vbs",
+      "bytes": 677,
+      "sha256": "775e387511eb1ead747856e9b0c0e69e2a9307c9b6252f484f2ae7bbeddabcfd",
+      "transformation": null
+    },
+    {
+      "path": "windows/test-tray.ps1",
+      "bytes": 23208,
+      "sha256": "475a2da23c759c627e0e73b34a050bdc38ca8d08e64fd86ceff8e0fc8daff521",
+      "transformation": null
+    },
+    {
+      "path": "windows/TrayCore.psm1",
+      "bytes": 16397,
+      "sha256": "9b6bb977c2f998530877e6a740e7f6d448232b3afe46ec2316e9c35238f3ba2a",
+      "transformation": null
+    }
+  ]
+}

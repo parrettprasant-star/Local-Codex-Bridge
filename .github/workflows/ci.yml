@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (Windows / Node 24)
+    runs-on: windows-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Check reachable history and source for secrets
+        shell: pwsh
+        run: |
+          ./scripts/restore-secret-scanner.ps1 -OutputDirectory .staging/secret-scanner-ci
+          & ./.staging/secret-scanner-ci/tool/gitleaks.exe git . --redact --log-opts=--all --gitleaks-ignore-path .gitleaksignore
+          if ($LASTEXITCODE -ne 0) { throw 'History secret scan failed.' }
+          & ./.staging/secret-scanner-ci/tool/gitleaks.exe dir . --redact --gitleaks-ignore-path .gitleaksignore
+          if ($LASTEXITCODE -ne 0) { throw 'Source secret scan failed.' }
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Isolated 13-tool catalog (no Codex tasks)
+        run: npm run smoke:catalog
+
+      - name: Restore pinned official WebView2 SDK
+        shell: pwsh
+        run: ./scripts/restore-webview2.ps1 -OutputDirectory .staging/sdk-ci
+
+      - name: Restore pinned Go and repair known Tunnel dependency vulnerabilities
+        shell: pwsh
+        run: |
+          ./scripts/restore-go.ps1 -OutputDirectory .staging/go-ci
+          ./scripts/build-hardened-tunnel.ps1 -GoExecutable .staging/go-ci/go/bin/go.exe -WorkDirectory .staging/tunnel-work-ci -OutputDirectory artifacts/TunnelRepair
+
+      - name: Build fresh desktop review package (no Tunnel credentials)
+        shell: pwsh
+        run: ./scripts/build-release-package.ps1 -WebViewSdkDirectory .staging/sdk-ci -TunnelDirectory artifacts/TunnelRepair -OutputDirectory artifacts/Dev1 -BuildLabel ci-review
+
+      - name: Desktop and Preview self-tests
+        shell: pwsh
+        run: ./windows/desktop/test-desktop.ps1 -Executable artifacts/Dev1/LocalCodexBridge.Desktop.exe
+
+      - name: Portable integrity and WebView2 real DOM startup (isolated state)
+        shell: pwsh
+        run: |
+          ./scripts/verify-release-package.ps1 -PackageDirectory artifacts/Dev1
+          ./scripts/test-release-docs.ps1 -DocumentationDirectory artifacts/Dev1
+          ./scripts/test-release-install.ps1 -PackageDirectory artifacts/Dev1
+          ./windows/desktop/test-portable.ps1 -PackageDirectory artifacts/Dev1
+          ./windows/desktop/test-preview-host.ps1 -PackageDirectory artifacts/Dev1
+
+      - name: Control Center DOM and independent detail scroll
+        run: |
+          npm run test:control-center-dom
+          npm run test:control-center-native-detail

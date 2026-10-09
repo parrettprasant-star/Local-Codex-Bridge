@@ -1,0 +1,4 @@
+# Reviewed 2026-10-10: hard-coded smoke-test idempotency_key argument, not an
+# authentication credential. Exact one-commit/one-line exception; do not add
+# a wildcard for API keys, key-named fields or whole directories.
+322c36b132bfcd6d1f52cae5d7ada4cacdf0ba26:scripts/result-handoff-smoke.mjs:generic-api-key:101

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "product": "Bridge Codex",
+  "version": "6.0.0-dev",
+  "channel": "local-dev",
+  "build": "replace-with-local-build-id",
+  "notes": "Local development manifest only. It is read-only metadata; Bridge Codex never auto-applies updates."
+}

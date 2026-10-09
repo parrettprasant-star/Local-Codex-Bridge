@@ -1,0 +1,133 @@
+[CmdletBinding()]
+param(
+    [string]$Executable = (Join-Path (Get-Location) '.staging\desktop\LocalCodexBridge.Desktop.exe'),
+    [string]$PreviewExecutable = ''
+)
+
+$ErrorActionPreference = 'Stop'
+function Assert-True([bool]$Condition, [string]$Message) {
+    if (-not $Condition) { throw $Message }
+}
+
+Assert-True (Test-Path -LiteralPath $Executable -PathType Leaf) "Desktop executable was not found: $Executable"
+if ([string]::IsNullOrWhiteSpace($PreviewExecutable)) { $PreviewExecutable = Join-Path (Split-Path -Parent $Executable) 'BridgeCodex-V6-Preview.exe' }
+Assert-True (Test-Path -LiteralPath $PreviewExecutable -PathType Leaf) "Preview executable was not found: $PreviewExecutable"
+$bytes = [IO.File]::ReadAllBytes($Executable)
+Assert-True ($bytes.Length -gt 4096) 'Desktop executable is unexpectedly small.'
+$identity = [Text.Encoding]::Unicode.GetString($bytes)
+Assert-True ($identity.Contains('Local Codex Bridge')) 'Desktop executable does not contain the product identity.'
+Assert-True ($identity.Contains('Local Codex Bridge')) 'Desktop executable does not contain the formal product identity.'
+$process = Start-Process -FilePath $Executable -ArgumentList '--self-test' -WindowStyle Hidden -Wait -PassThru
+Assert-True ($process.ExitCode -eq 0) "Desktop self-test failed with exit code $($process.ExitCode)."
+$previewProcess = Start-Process -FilePath $PreviewExecutable -ArgumentList '--self-test' -WindowStyle Hidden -Wait -PassThru
+Assert-True ($previewProcess.ExitCode -eq 0) "Preview desktop self-test failed with exit code $($previewProcess.ExitCode)."
+
+$source = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'LocalCodexBridge.Desktop.cs')
+$appHost = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'BridgeCodexAppHost.cs')
+$manifest = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'LocalCodexBridge.Desktop.manifest')
+Assert-True ($source.Contains('Local\\LocalCodexBridge.Desktop')) 'Desktop must use a single-instance mutex.'
+Assert-True ($source.Contains('dist\\index.js')) 'Desktop must prefer the portable dist/index.js entry.'
+Assert-True ($source.Contains('ResolveBridgeEntryPath')) 'Desktop must centralize Bridge entry resolution.'
+Assert-True ($source -match 'dist\\\\src\\\\index\.js') 'Desktop must retain the source-layout fallback.'
+Assert-True ($source -notmatch 'Path\.Combine\(root,\s*Settings\.BridgeEntry\)') 'Desktop must not reconstruct the legacy entry path directly.'
+Assert-True ($source -match 'ProtectedData\.Protect') 'Desktop must encrypt Runtime API Key with DPAPI.'
+Assert-True ($source -match 'CONTROL_PLANE_API_KEY') 'Tunnel key injection must remain environment-only.'
+Assert-True ($source -match 'taskkill\.exe') 'Owned process-tree stop must be implemented.'
+Assert-True ($source -match 'bridgeAgent') 'Dashboard must display Bridge Agent state.'
+Assert-True ($source -match 'pending_confirmation') 'Dashboard must display pending confirmations.'
+Assert-True ($source -match 'service_sessions') 'Dashboard diagnostics must include service session health.'
+Assert-True ($source -match 'RunLayoutSelfTest') 'Desktop self-test must exercise the Dashboard layout.'
+Assert-True ($source -match 'RunResizeSelfTest') 'Desktop self-test must exercise native resize constraints.'
+Assert-True ($source -match 'RunResponsivenessSelfTest') 'Desktop self-test must exercise interactive UI responsiveness.'
+Assert-True ($source -match 'BridgeCodexWebViewForm\.RunLifecycleSelfTestCode') 'Desktop self-test must exercise callbacks after WebView2 host shutdown.'
+Assert-True ($appHost -match 'Microsoft\.Web\.WebView2\.WinForms\.WebView2') 'Bridge Codex host must expose the WebView2 integration point.'
+Assert-True ($appHost -match '/app') 'Bridge Codex host must target the app shell route.'
+Assert-True ($appHost -match 'NewWindowRequested') 'WebView2 host must intercept external status-page windows.'
+Assert-True ($appHost -match 'UseShellExecute = true') 'Legacy status page must use the Windows default browser.'
+Assert-True ($appHost -match 'NavigationStarting') 'WebView2 host must guard same-window legacy status navigation.'
+Assert-True ($appHost -match 'WebMessageReceived') 'WebView2 host must expose the safe UI message bridge.'
+Assert-True ($appHost -match 'WebViewReadyTimeout') 'WebView2 host must fail safe when initialization or navigation stalls.'
+Assert-True ($appHost -match 'ProcessFailed') 'WebView2 host must record renderer process failure.'
+Assert-True ($appHost -match 'RecordClientError') 'WebView2 host must record client-side JavaScript errors.'
+Assert-True ($appHost -match 'Control Center 暂时无法加载') 'WebView2 host must expose a visible non-black-screen fallback.'
+Assert-True ($appHost -match 'NavigateToString') 'WebView2 host must show a local bootstrap shell before backend readiness.'
+Assert-True ($appHost -match 'RuntimeStatusUrl') 'WebView2 host must resolve the actual runtime status lease.'
+Assert-True ($appHost -match 'bridge-host-readiness-timeout') 'WebView2 backend readiness must have a bounded timeout.'
+Assert-True ($appHost -match 'NavigationRetryTimer') 'WebView2 readiness retries must use a UI-owned timer.'
+Assert-True ($appHost -match 'Interval = 400') 'WebView2 readiness retries must continue while the host lease is pending.'
+Assert-True ($appHost -match 'NavigationAttempts >= 60') 'WebView2 readiness retry budget must cover delayed host publication.'
+Assert-True ($appHost -match 'Control Center 暂时无法加载') 'WebView2 fallback must remain a usable diagnostics panel.'
+Assert-True ($appHost -match '重新启动 Control Center Host') 'WebView2 fallback must expose host recovery.'
+Assert-True ($appHost -match 'TryBeginInvoke\(this, InitializeWebView2\)') 'WebView2 initialization must run after the WinForms message pump starts.'
+Assert-True ($appHost -match 'FindEnsureCoreWebView2Method') 'WebView2 initialization must select the installed API overload.'
+Assert-True ($appHost -match 'FolderBrowserDialog') 'Desktop host must provide a native folder picker.'
+Assert-True ($appHost -match 'PostWebMessageAsJson') 'Desktop host must return folder-picker results to the app shell.'
+Assert-True ($appHost -match 'TryBeginInvoke\(this, ShowFolderPicker\)') 'Folder picker must open after the WebView callback returns.'
+Assert-True ($appHost -match 'HandleWebMessage') 'Desktop host must route WebView commands through a guarded handler.'
+Assert-True ($appHost -match 'ShowDialog\(this\)') 'Folder picker must be owned by the Bridge form.'
+Assert-True ($source -match 'AutoScaleMode = AutoScaleMode\.Dpi') 'Dashboard must use DPI-aware autoscaling.'
+Assert-True ($source -match 'FormBorderStyle = FormBorderStyle\.Sizable') 'Dashboard must explicitly remain resizable.'
+Assert-True ($source -match 'AutoSize = false') 'Dashboard form AutoSize must not lock the outer window.'
+Assert-True ($source -match 'MaximumSize = Size\.Empty') 'Dashboard must not impose a maximum size.'
+Assert-True ($source -match 'LogicalMinimumWindowSize') 'Dashboard minimum size must be represented in logical units.'
+Assert-True ($source -match 'WM_ENTERSIZEMOVE') 'Dashboard must recognize the native move/size interaction boundary.'
+Assert-True ($source -match 'WM_EXITSIZEMOVE') 'Dashboard must resume refresh only after the native move/size interaction.'
+Assert-True ($source -match 'StatusRefreshIntervalMilliseconds = 4000') 'Dashboard status polling must be bounded.'
+Assert-True ($source -match 'TaskScheduler\.Default') 'Dashboard status I/O must stay off the UI scheduler.'
+Assert-True ($source -match 'SetTextIfChanged') 'Dashboard text updates must be deduplicated.'
+Assert-True ($source -match 'SuspendLayout\(\)') 'Dashboard updates must batch layout notifications.'
+Assert-True ($source -match 'ResumeLayout\(false\)') 'Dashboard updates must not force an unconditional full layout.'
+Assert-True ($source -match 'BridgeCodex\.V6Preview') 'Preview must use an independent mutex.'
+Assert-True ($source -match 'DesktopInstanceSignal') 'Desktop must expose the Preview instance signal mechanism.'
+Assert-True ($source -match 'ShowEventName') 'Desktop must expose a named reopen signal.'
+Assert-True ($source -match 'ExitEventName') 'Desktop must expose a named exit signal.'
+Assert-True ($source -match 'EventResetMode\.ManualReset') 'Preview instance signals must not be lost between monitor waits.'
+Assert-True ($source -match 'WaitHandle\.WaitAny') 'Preview instance signals must have a dedicated wait monitor.'
+Assert-True ($source -match 'EnsureDashboard') 'Desktop must recreate a disposed Dashboard safely.'
+Assert-True ($source -match 'ProductName.*Local Codex Bridge') 'Desktop UI product name must be Local Codex Bridge.'
+Assert-True ($source -match '打开 Local Codex Bridge') 'Tray reopen menu must use the formal product name.'
+Assert-True ($source -match 'Tray = new NotifyIcon .*DesktopPaths\.ProductName') 'Tray tooltip must use the formal product name.'
+Assert-True ($source -notmatch 'Bridge Codex V6 Preview') 'Desktop source must not expose the Preview product name.'
+Assert-True ($appHost -notmatch 'Bridge Codex V6 Preview') 'WebView2 host must not expose the Preview product name.'
+Assert-True ($source -match 'FindPreviewBridgeCandidates') 'Preview startup must use strict same-package stale ownership matching.'
+Assert-True ($source -match 'internal static string ExecutablePath') 'Preview ownership identity must use a process executable-path probe.'
+Assert-True ($source -match 'LifecycleLock') 'Bridge start and stop must be serialized during Preview shutdown.'
+Assert-True ($source -match 'WindowStateStore\.ApplyInitial') 'Preview startup must apply persisted window placement.'
+Assert-True ($source -match 'WindowStateStore\.Save') 'Preview exit must persist window placement.'
+Assert-True ($source -match 'WindowStateFile') 'Preview window placement must have a dedicated state file.'
+Assert-True ($appHost -match 'WindowState = FormWindowState\.Maximized') 'WebView host must default to a maximized usable window.'
+Assert-True ($source -match 'ShortcutMigration\.EnsureCurrent') 'Shortcut migration must use idempotent target inspection.'
+Assert-True ($source -match '(?s)if \(\!DesktopPaths\.IsPreview\)\s*\{\s*ShortcutMigration\.EnsureCurrent') 'Preview candidate startup must not rewrite the formal desktop shortcut.'
+Assert-True ($source -match 'InvokeCom\(shell, "CreateShortcut"') 'Shortcut migration must read Windows shortcut state.'
+Assert-True ($appHost -match 'AllowClose') 'WebView2 X close must be distinguishable from true application exit.'
+Assert-True (([regex]::Matches($appHost, 'cycle < 5')).Count -ge 2) 'WebView2 tray reopen self-test must cover ten close/reopen cycles.'
+Assert-True ($appHost -match 'ClearHostStatus') 'Preview exit must clear host status.'
+Assert-True ($source -match '37930') 'Preview must use the independent deterministic port range.'
+Assert-True ($source -match 'LOCAL_CODEX_BRIDGE_STATUS_FILE') 'Preview must isolate the status file.'
+Assert-True ($source -match 'LOCAL_CODEX_BRIDGE_TASKS_FILE') 'Preview must isolate the task store.'
+Assert-True ($source -match 'V6Preview') 'Preview must use a dedicated AppData root.'
+Assert-True ($source -match 'LOCAL_CODEX_BRIDGE_UX_PROJECTION') 'Preview must isolate the UX projection.'
+Assert-True ($source -match 'V6TunnelProfile') 'Preview must use the bundled V6 Tunnel profile implementation.'
+Assert-True ($source -match 'FindPreviewTunnelCandidates') 'Preview Tunnel startup must reconcile only same-package ownership.'
+Assert-True ($source -match 'FindPreviewTunnelChildCandidates') 'Preview Tunnel ownership must identify the exact MCP stdio child.'
+Assert-True ($source -match 'ParentProcessId') 'Preview Tunnel ownership must bind the MCP child to the exact parent process.'
+Assert-True ($source -match 'MonitorOwnedProcess') 'Bridge must observe owned process exit notifications.'
+Assert-True ($source -match 'QueueTunnelRecovery') 'Preview Tunnel failures must have bounded recovery.'
+Assert-True ($source -match 'TunnelStateFile') 'Preview Tunnel health must use an isolated state file.'
+Assert-True ($source -match 'run --config') 'Preview Tunnel must launch from a generated V6 config.'
+Assert-True ($source -match 'health.listen-addr 127.0.0.1:0') 'Preview Tunnel health must use an isolated local admin port.'
+Assert-True ($source -match 'LOCAL_CODEX_BRIDGE_TUNNEL_STATE_FILE') 'Bridge and Plugin child state must carry the V6 Tunnel state path.'
+Assert-True ($source -match 'StatusUrlFile') 'Preview must publish and consume the actual status URL lease file.'
+Assert-True ($source -match 'LOCAL_CODEX_BRIDGE_STATUS_URL_FILE') 'Preview Bridge must receive the status URL lease path.'
+Assert-True ($source -match 'statusPort = "0"') 'Production Preview must let the backend bind its status port atomically.'
+Assert-True ($source -match 'ConfigureRequested') 'Runtime configuration repair must be explicitly user-triggered.'
+Assert-True ($source -match 'mcp_child_pid') 'Tunnel state must publish the owned MCP child identity.'
+Assert-True ($source -match 'transport_status') 'Tunnel state must publish MCP transport status.'
+$applyStart = $source.IndexOf('private void ApplySnapshot')
+$applyEnd = $source.IndexOf('private bool SetTextIfChanged', $applyStart)
+Assert-True (($applyStart -ge 0) -and ($applyEnd -gt $applyStart)) 'Dashboard snapshot apply method was not found.'
+$applyBody = $source.Substring($applyStart, $applyEnd - $applyStart)
+Assert-True ($applyBody -notmatch 'Controller\.(ReadStatus|ReadDashboardStatus|TunnelState|BridgeOwnership|TunnelOwnership|Diagnostics|Owned)') 'Dashboard UI apply must not perform synchronous Bridge/process queries.'
+Assert-True ($applyBody -notmatch 'StatusSnapshot\.(Read|Probe)') 'Dashboard UI apply must not perform synchronous HTTP probes.'
+Assert-True ($manifest -match 'PerMonitorV2') 'Desktop manifest must opt into per-monitor DPI.'
+Write-Output 'DESKTOP_TESTS_OK'

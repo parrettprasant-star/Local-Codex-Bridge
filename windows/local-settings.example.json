@@ -1,0 +1,11 @@
+{
+  "readyUrl": "http://127.0.0.1:8080/readyz",
+  "statusUrl": "http://127.0.0.1:37821/api/status",
+  "statusPageUrl": "http://127.0.0.1:37821/status",
+  "tunnelProfile": "your-tunnel-profile",
+  "tunnelExecutable": "%LOCALAPPDATA%\\Tools\\tunnel-client.exe",
+  "runtimeKeyFile": "%APPDATA%\\LocalCodexBridge\\runtime_key_v5.securestring",
+  "logDirectory": "%LOCALAPPDATA%\\LocalCodexBridge\\logs",
+  "projectionPath": "%LOCALAPPDATA%\\LocalCodexBridge\\ux-projection.json",
+  "checkpointDirectory": "%LOCALAPPDATA%\\LocalCodexBridge\\checkpoints"
+}

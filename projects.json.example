@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "projects": [
+    {
+      "project_id": "demo_project",
+      "project_name": "Example project",
+      "root_path": "C:\\Projects\\Demo",
+      "allowed_capabilities": ["file_read"]
+    }
+  ]
+}
