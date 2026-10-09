@@ -15,6 +15,18 @@ ChatGPT → 自己的 Secure MCP Tunnel → 本机 Bridge → 官方 Codex
 
 GitHub 下载软件与私有 ChatGPT 连接是两件事。每个人需要自己的注册/key，不能共用维护者 Tunnel。Secure MCP Tunnel 私有接入的边界见 [官方文档](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)。
 
+## 日常使用：先选一种方式
+
+| 你想做的事 | 使用路线 | 结果到哪里看 |
+|---|---|---|
+| 让 ChatGPT 调用本机 Agent | 启动 Bridge → Tunnel/Plugin 就绪 → ChatGPT 选择插件 → 先验证连接 → 明确提交一次任务 | ChatGPT 的实际返回、Bridge 总览及对应 Native Thread/任务详情 |
+| 查看或继续已有 Codex 会话 | Native Threads → 搜索/选择会话 → 看详情；需要续写才点“继续这个线程” | 该准确 thread_id 的详情，不另建会话 |
+| 不经过 ChatGPT，手动做独立任务 | AGENTS → 新建独立任务 → 选择真实项目目录 → 输入描述 → 发送 | AGENTS 任务详情里的事件和输出；它不变成 Native persistent history |
+
+第一次只要理解上面三条，不需要记工具名。没有已注册项目时可以直接使用真实 `cwd`，不用先编辑 JSON；没有历史会话/自动化时相应页面为空是正常情况。
+
+任务描述要说清“要做什么、可以读哪个目录、不能做什么、期望返回什么”。第一次建议复制 [最小文本测试](CHATGPT-PROMPTS.zh-CN.md#3-最小文本任务会创建持久线程)，将示例工作目录换成自己已经存在、不敏感的目录；不要选密码库、认证目录或整个用户目录。
+
 ## 启动、隐藏、恢复、真退出
 
 - 日常启动：桌面 Local Codex Bridge。别在多个目录同时运行多个版本。

@@ -12,6 +12,21 @@ This is not a public ChatGPT App Store submission.
 第一次使用请从 [小白快速安装](START-HERE.zh-CN.md) 开始。下载 Windows ZIP，
 完整解压到短目录后双击 `install.cmd`，不需要编译源码。
 
+这是让 ChatGPT 使用你电脑上 Codex 的桥梁，不是另一个 ChatGPT，也不是一个
+下载后就自动取得账号权限的插件。**先确认自己的账号可以使用自定义 MCP / Tunnel，
+再安装；日常使用从桌面快捷方式启动，第一次配置只做一次。**
+
+| 你现在想做什么 | 从哪里开始 |
+|---|---|
+| 第一次安装，不懂代码 | [安装路线与每一步成功标志](START-HERE.zh-CN.md#先看这一页安装路线) |
+| 想让本机 AI 帮忙安装 | [复制安装指令](CHATGPT-PROMPTS.zh-CN.md#让本机-ai-协助安装)；登录/授权仍由本人完成 |
+| 已安装，想让 ChatGPT 使用 | [连接 ChatGPT](START-HERE.zh-CN.md#5-在-chatgpt-连接)，先验证连接，再提交任务 |
+| 只想在 Bridge 内做独立任务 | [AGENTS 的用法](USER-GUIDE.zh-CN.md#agents) |
+| 出错、升级或卸载 | [常见问题](USER-GUIDE.zh-CN.md#常见问题)、[升级回滚与卸载](USER-GUIDE.zh-CN.md#升级回滚与卸载) |
+
+Windows ZIP 不包含 Node、你的 Codex 安装或账号认证。`install.cmd` 是本地完整性
+检查和桌面入口安装，不会替你安装所有依赖或自动注册 Tunnel。
+
 [下载 Windows 包](https://github.com/parrettprasant-star/Local-Codex-Bridge/releases/latest)
 （选择 `LocalCodexBridge-6.2.0-windows-x64.zip` 和 `SHA256SUMS.txt`；源码包供开发者使用）。
 

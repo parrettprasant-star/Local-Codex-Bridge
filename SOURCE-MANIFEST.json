@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T21:41:02.1317513Z",
+  "generated_at": "2026-10-09T22:02:19.2221111Z",
   "purpose": "local-source-review-not-public-release",
   "binaries_included": false,
   "git_history_included": false,
@@ -49,8 +49,8 @@
     },
     {
       "path": "CHATGPT-PROMPTS.zh-CN.md",
-      "bytes": 4824,
-      "sha256": "ba7397c3320e38a5501738b169d43fec16e1e112cfcf7a69ffe9e40859485eb2",
+      "bytes": 5933,
+      "sha256": "d58eb0ed7367f9da051a8cdde1a575adf6f012415e46797116ef0a823495ad2c",
       "transformation": null
     },
     {
@@ -97,8 +97,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6692,
-      "sha256": "772193425b774e45ca4e2070f6599e90c8c813a298f2cd54cdc5c8072da754ec",
+      "bytes": 7870,
+      "sha256": "5308d37feaae08dd30b4d12ccdfc8947fb0128aa6255340051d2950949bd4222",
       "transformation": null
     },
     {
@@ -175,8 +175,8 @@
     },
     {
       "path": "scripts/test-release-docs.ps1",
-      "bytes": 2208,
-      "sha256": "1ae59b62a6c541a591d6796745b1601e800eb0bd59d4b264da4e1358328e5dd3",
+      "bytes": 4094,
+      "sha256": "648b5ffd81cfae79a8471e9a04496095617f9bb9dc3461765feeab8f3ef2c22c",
       "transformation": null
     },
     {
@@ -511,8 +511,8 @@
     },
     {
       "path": "START-HERE.zh-CN.md",
-      "bytes": 8910,
-      "sha256": "a2861c4fc6f159f3884885e13c5eef18887e8d707252cea2cfe00d43b846dd19",
+      "bytes": 15122,
+      "sha256": "1dc4ffa01e17233fe86e5808e866ce8e9926cf5b34e39f1e837cea214604318f",
       "transformation": null
     },
     {
@@ -847,8 +847,8 @@
     },
     {
       "path": "USER-GUIDE.zh-CN.md",
-      "bytes": 11491,
-      "sha256": "59608f91c2ab6eb9de9877bf285100f89855867723fc94628b3a6a1512ca9768",
+      "bytes": 12791,
+      "sha256": "edf5bf35ce3395f5a32972872596946caa498aa58dd60d363fe5981a6418294b",
       "transformation": null
     },
     {
