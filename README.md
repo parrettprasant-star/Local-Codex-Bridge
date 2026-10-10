@@ -1,6 +1,6 @@
 # Local Codex Bridge
 
-**ChatGPT ↔ local Codex Agent control center for Windows.**
+**ChatGPT ↔ local Codex Agent bridge: Windows Control Center + macOS browser-host preview.**
 
 **Cross-platform update:** `v6.2.0` remains the Windows x64 stable release.
 The [macOS browser-host preview](MACOS.zh-CN.md) is separate, not a Windows EXE
@@ -26,6 +26,13 @@ This is not a public ChatGPT App Store submission.
 网页“添加 → 添加自定义 MCP 服务器 → Tunnel”的跨平台步骤见
 [ChatGPT 插件配置](CHATGPT-PLUGIN-SETUP.zh-CN.md)。登录、授权、真实调用是独立验收点，
 不承诺“下载后所有账号自动连通”。
+
+| 系统 | 下载与入口 | 当前验收边界 |
+|---|---|---|
+| Windows 10/11 x64 | [v6.2.0 正式 ZIP](https://github.com/parrettprasant-star/Local-Codex-Bridge/releases/tag/v6.2.0)，`install.cmd` / 桌面快捷方式 | 既有真实 Windows GUI、Tunnel、ChatGPT Cloud 验收保留 |
+| Mac Apple Silicon / Intel | [独立 Mac 预览](https://github.com/parrettprasant-star/Local-Codex-Bridge/releases/tag/macos-preview-20261010)，[中文向导](MACOS.zh-CN.md) | macOS 15 CI、真实浏览器、打包通过；真实账号 Cloud / own-Tunnel 故障恢复仍待人工验收，不称 stable |
+
+第一次配置是“本机 Codex → 安装/本人登录与 Tunnel 配置 → 网页添加插件 → 真实只读调用”，不是让尚未连接的网页插件反过来安装自己。
 
 这是让 ChatGPT 使用你电脑上 Codex 的桥梁，不是另一个 ChatGPT，也不是一个
 下载后就自动取得账号权限的插件。**先确认自己的账号可以使用自定义 MCP / Tunnel，

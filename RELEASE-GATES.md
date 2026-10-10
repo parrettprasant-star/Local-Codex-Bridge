@@ -32,15 +32,20 @@ evidence. SHA256 identifies the chosen binary; a local PASS is not hosted CI.
 
 ## Separate macOS preview gates (not inherited from Windows)
 
-- [ ] Real macOS 15 Intel / Apple Silicon CI: path, scopes, stdio catalog, lazy
+- [x] Real macOS 15 Intel / Apple Silicon CI: path, scopes, stdio catalog, lazy
   native adapter, private Keychain readback and three isolated child restarts.
-- [ ] Real Mac Chromium mounted DOM and independent Native detail scroll.
-- [ ] Architecture-matched Tunnel repair build, provenance, dependency licenses,
+- [x] Real Mac Chromium mounted DOM and independent Native detail scroll.
+- [x] Architecture-matched Tunnel repair build, provenance, dependency licenses,
   known vulnerability scan and clean package manifest.
 - [ ] Real macOS user/ChatGPT Cloud discovery and task acceptance. A fake executor
   smoke is labelled fake; it does not satisfy this gate.
 - [ ] macOS packaged startup / Ctrl+C cleanup and interrupted recovery with real
   own Tunnel. No notarization is claimed; absent gate means preview, not stable.
+
+Mac CI evidence: [PR validation 38030763299](https://github.com/parrettprasant-star/Local-Codex-Bridge/actions/runs/38030763299).
+Both architectures passed; archive extraction preserved executable permission and
+matched every payload hash. The adapter smoke explicitly uses a FAKE executor.
+Do not convert these checked CI gates into a claim of real Mac Cloud acceptance.
 
 The community package is **unsigned**. Do not label it signed, official, Store
 approved, or universally provisioned. Code signing needs a real publisher
