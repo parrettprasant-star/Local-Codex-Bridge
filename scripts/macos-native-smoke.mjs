@@ -3,7 +3,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { chmodSync, existsSync, mkdtempSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -51,7 +51,7 @@ try {
       const html = await (await fetch(lease.url.replace("/api/status", "/app"))).text();
       assert.ok(html.includes("page-overview"));
       const created = await tool("create_agent_task", { instruction: "FAKE TEST ONLY", cwd: state, title: "Mac adapter fixture" });
-      assert.equal(created.accepted, true); assert.equal(created.cwd, state);
+      assert.equal(created.accepted, true); assert.equal(created.cwd, realpathSync.native(state));
       await new Promise((r) => setTimeout(r, 80));
       const observed = await tool("codex_observe", { thread_id: created.thread_id, cursor: 0, limit: 20 });
       const confirmation = observed.pending_requests[0];
