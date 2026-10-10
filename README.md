@@ -31,6 +31,7 @@ Windows ZIP 不包含 Node、你的 Codex 安装或账号认证。`install.cmd` 
 （选择 `LocalCodexBridge-6.2.0-windows-x64.zip` 和 `SHA256SUMS.txt`；源码包供开发者使用）。
 
 - [完整使用手册](USER-GUIDE.zh-CN.md)：页面、任务、历史、排错、升级/回滚/卸载。
+- [截图操作流程](SCREENSHOT-GUIDE.zh-CN.md)：选择 ChatGPT 插件、只读检查、查看任务与会话、AGENTS 和诊断；真实记录与演示环境分开标注。
 - [可复制指令](CHATGPT-PROMPTS.zh-CN.md)：AI 辅助安装、连接检查、第一次只读任务。
 - [隐私与公开边界](PRIVACY-RELEASE.zh-CN.md)：哪些不上传、使用时哪些内容可能发给 ChatGPT。
 

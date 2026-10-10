@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T22:02:19.2221111Z",
+  "generated_at": "2026-10-10T04:14:26.678Z",
   "purpose": "local-source-review-not-public-release",
   "binaries_included": false,
   "git_history_included": false,
@@ -60,6 +60,60 @@
       "transformation": null
     },
     {
+      "path": "docs/images/quickstart/01-chatgpt-select-bridge.jpg",
+      "transformation": null,
+      "bytes": 6049,
+      "sha256": "5413d5f371f6889c37db5bfa55b0ff7e5096e109ebe54e041d98ea266201fa99"
+    },
+    {
+      "path": "docs/images/quickstart/02-chatgpt-agent-result.jpg",
+      "transformation": null,
+      "bytes": 69725,
+      "sha256": "0880cdbf6169b52e40aea0d33cdb8b14fe6a6c878b11e5d4e66909ef4441f283"
+    },
+    {
+      "path": "docs/images/quickstart/02-chatgpt-readonly-prompt.jpg",
+      "transformation": null,
+      "bytes": 13605,
+      "sha256": "ebe2186e6203bc7d63ef30b3e875bde145c16a0854a1e709bb386e200029173f"
+    },
+    {
+      "path": "docs/images/quickstart/03-bridge-overview-demo.jpg",
+      "transformation": null,
+      "bytes": 84755,
+      "sha256": "52120b3c92cd188641ee9d09d41d59b95818bae87fe015899bafa8544d12c7ba"
+    },
+    {
+      "path": "docs/images/quickstart/04-bridge-native-detail-demo.jpg",
+      "transformation": null,
+      "bytes": 94283,
+      "sha256": "5e19192ad797a2449f51097fb306485c08bd4f3c09749345ec4083837ea3110a"
+    },
+    {
+      "path": "docs/images/quickstart/05-bridge-native-scroll-demo.jpg",
+      "transformation": null,
+      "bytes": 111379,
+      "sha256": "f81d5c66f91d530a619957079dca8f5a8beb3916687173b9e7c940d43d1891b2"
+    },
+    {
+      "path": "docs/images/quickstart/06-bridge-agents-demo.jpg",
+      "transformation": null,
+      "bytes": 88449,
+      "sha256": "c747474c9308a989d51b8d67523f87af9b7564b9cf0c08c0835f9eda5938f15f"
+    },
+    {
+      "path": "docs/images/quickstart/07-bridge-diagnostics-demo.jpg",
+      "transformation": null,
+      "bytes": 81347,
+      "sha256": "afaac938f1249c22d19ea3502d6a3af74a1a01ed0bb856238977fab793c31692"
+    },
+    {
+      "path": "docs/images/quickstart/SCREENSHOTS.json",
+      "transformation": null,
+      "bytes": 3643,
+      "sha256": "4e014205d9669be678fc3f91c5477e59dc919027764a28762eb5b5b8a1358d56"
+    },
+    {
       "path": "LICENSE",
       "bytes": 1109,
       "sha256": "745c2dcaa70f3f108395b3645a922fe98d6c3f773c0090876473651d6a361341",
@@ -97,8 +151,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 7870,
-      "sha256": "5308d37feaae08dd30b4d12ccdfc8947fb0128aa6255340051d2950949bd4222",
+      "bytes": 8047,
+      "sha256": "e2be87e0203ee081f2a97494595d14a2862bb456877f49351adb1f079cd33fa2",
       "transformation": null
     },
     {
@@ -114,6 +168,12 @@
       "transformation": null
     },
     {
+      "path": "SCREENSHOT-GUIDE.zh-CN.md",
+      "transformation": null,
+      "bytes": 9693,
+      "sha256": "f91a74c867d7cb555e1998fcb48f81ab250f06442cfb26c765258365d3e76bd6"
+    },
+    {
       "path": "scripts/build-hardened-tunnel.ps1",
       "bytes": 6861,
       "sha256": "032a79b6bf5a12fe06ec1167836047a2e82b0ee2f1708d8ad9161cf9503f1182",
@@ -121,8 +181,8 @@
     },
     {
       "path": "scripts/build-release-package.ps1",
-      "bytes": 4298,
-      "sha256": "b78221c89baea195f197d722050d2c51ac219b8bb0ba4a14d999ba24eea14fc8",
+      "bytes": 4726,
+      "sha256": "ed5a9ef1b47ec5f2c49aeeee355229c3cf0a8127c473dea873a940053367d8a1",
       "transformation": null
     },
     {
@@ -175,8 +235,8 @@
     },
     {
       "path": "scripts/test-release-docs.ps1",
-      "bytes": 4094,
-      "sha256": "648b5ffd81cfae79a8471e9a04496095617f9bb9dc3461765feeab8f3ef2c22c",
+      "bytes": 6792,
+      "sha256": "2f73d1cc62899fb500848b485fb7e894d3a38a51ae6832a5ec2b0868af596a39",
       "transformation": null
     },
     {
@@ -511,8 +571,8 @@
     },
     {
       "path": "START-HERE.zh-CN.md",
-      "bytes": 15122,
-      "sha256": "1dc4ffa01e17233fe86e5808e866ce8e9926cf5b34e39f1e837cea214604318f",
+      "bytes": 15757,
+      "sha256": "19f15c5b04f3c45c987303df3702be18d3b9a6e253fcd03c4de7aa7f1fcf0aad",
       "transformation": null
     },
     {

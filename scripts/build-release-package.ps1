@@ -32,10 +32,16 @@ Copy-Item -LiteralPath (Join-Path $repo 'windows\desktop\install-portable.ps1') 
 Copy-Item -LiteralPath (Join-Path $repo 'windows\desktop\install.cmd') -Destination (Join-Path $output 'install.cmd')
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'verify-release-package.ps1') -Destination (Join-Path $output 'verify-release-package.ps1')
 foreach ($name in @('SECURITY.md','CONTRIBUTING.md','RELEASE-GATES.md','RELEASE-NOTES-6.2.0.md',
-    'START-HERE.zh-CN.md','USER-GUIDE.zh-CN.md','CHATGPT-PROMPTS.zh-CN.md',
+    'START-HERE.zh-CN.md','USER-GUIDE.zh-CN.md','CHATGPT-PROMPTS.zh-CN.md','SCREENSHOT-GUIDE.zh-CN.md',
     'PRIVACY-RELEASE.zh-CN.md','projects.json.example')) {
     Copy-Item -LiteralPath (Join-Path $documentation $name) -Destination (Join-Path $output $name)
 }
+# Documentation assets only: future builds must not ship a guide with broken
+# image links. The already published v6.2.0 archives are not replaced.
+$guideImages = Join-Path $documentation 'docs\images\quickstart'
+$outputImages = Join-Path $output 'docs\images'
+New-Item -ItemType Directory -Path $outputImages -Force | Out-Null
+Copy-Item -LiteralPath $guideImages -Destination $outputImages -Recurse
 $metadata = Get-Content -Raw -LiteralPath (Join-Path $output 'package.json') | ConvertFrom-Json
 $metadata.release_status = 'release-candidate-not-published'
 $metadata.tunnel_bundled = -not [string]::IsNullOrWhiteSpace($TunnelDirectory)

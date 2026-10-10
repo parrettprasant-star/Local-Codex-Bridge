@@ -4,6 +4,8 @@
 
 你要做的只有五段：**准备依赖 → 解压安装 → 填自己的连接信息 → 在 ChatGPT 连接 → 发一个只读测试**。日常使用不用编译源码，不用另外手工运行 tunnel-client。
 
+想边看图边操作，请配合 [ChatGPT 调用与 Bridge 界面图解](SCREENSHOT-GUIDE.zh-CN.md)。图解不替代本页的账号权限、依赖和首次配置步骤。
+
 ## 先看这一页：安装路线
 
 如果你第一次用 GitHub 或没用过命令行，先照这张表走。安装依赖只做一次；之后正常使用只需打开桌面快捷方式。
@@ -83,13 +85,15 @@ node.exe --version
 
 ```powershell
 npm.cmd install -g @openai/codex
-codex --version
-codex
+codex.cmd --version
+codex.cmd
 ```
 
 首次进入 Codex 按官方界面登录自己的账号；完成登录后退出这次 CLI 即可。不提供密码、验证码或 auth.json 给 Bridge。npm 安装方式依据 [OpenAI 官方安装示例](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex)。
 
 这三条在 PowerShell 中逐条执行：第一条安装，第二条应显示版本，第三条进入官方登录界面。不要在登录界面顺手提交任务。完成后用官方界面退出；常规终端可按 Ctrl+C。如果公司不允许全局 npm 安装，停下来遵循组织政策，不使用提权或清空配置来绕过。
+
+这里的 `codex.cmd` 专门用于 **npm 安装方式**：PowerShell 的默认策略可能阻止 npm 同时生成的 `codex.ps1`，所以明确调用 CMD 启动脚本，不需要改系统执行策略。已经通过官方原生安装得到 `codex.exe` 的用户仍使用自己的原生 EXE，不必改成 npm 安装。若 `codex.cmd` 不存在，先确认 npm 安装成功并重新打开终端，不关闭防护、不永久修改 ExecutionPolicy。
 
 Bridge 配置需要真正的 **codex.exe**，不是 codex.cmd / codex.ps1 / codex.js。若向导没有自动发现，先运行：
 
@@ -105,7 +109,7 @@ Get-ChildItem -LiteralPath "$env:APPDATA\npm\node_modules\@openai" -Recurse -Fil
 
 把找到的 x64 官方 codex.exe 完整路径填入向导。自定义 npm prefix 则查对应的安装目录；找不到就停在依赖问题，不使用来历不明 EXE，不修改 `.codex` 来碰运气。
 
-如果查到多个架构，Windows x64 使用对应 `x86_64` / `x64` 的官方二进制，不选 ARM64。`codex --version` 成功和找到真正的 `codex.exe` 是两项检查；Bridge 不能拿 `codex.cmd` 当原生 EXE 使用。
+如果查到多个架构，Windows x64 使用对应 `x86_64` / `x64` 的官方二进制，不选 ARM64。`codex.cmd --version` 成功和找到真正的 `codex.exe` 是两项检查；Bridge 不能拿 `codex.cmd` 当原生 EXE 使用。
 
 ### Microsoft WebView2 Runtime
 

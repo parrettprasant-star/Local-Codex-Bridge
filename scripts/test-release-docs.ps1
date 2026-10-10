@@ -4,6 +4,10 @@ $ErrorActionPreference='Stop'
 $root=(Resolve-Path -LiteralPath $DocumentationDirectory).Path.TrimEnd('\')
 $required=@('README.md','TUNNEL-SETUP.md','START-HERE.zh-CN.md','USER-GUIDE.zh-CN.md',
     'CHATGPT-PROMPTS.zh-CN.md','PRIVACY-RELEASE.zh-CN.md','projects.json.example')
+# Older immutable v6.2.0 ZIPs predate the online screenshot guide. Validate it
+# whenever present; new README/START-HERE links also make omission fail below.
+$screenshotGuide=Join-Path $root 'SCREENSHOT-GUIDE.zh-CN.md'
+if(Test-Path -LiteralPath $screenshotGuide -PathType Leaf){$required+='SCREENSHOT-GUIDE.zh-CN.md'}
 foreach($name in $required){
     if(-not(Test-Path -LiteralPath (Join-Path $root $name) -PathType Leaf)){throw ('Missing user documentation: '+$name)}
 }
@@ -54,6 +58,43 @@ foreach($needle in @('install.cmd','Node.js','codex.exe','Runtime','自己的','
 }
 foreach($needle in @('先看这一页：安装路线','成功标志','Download ZIP','No authentication','安装完以后，每天怎么用','登录','授权')){
     if(-not $start.Contains($needle)){throw ('Missing beginner action/acceptance guidance: '+$needle)}
+}
+if($start.Contains('SCREENSHOT-GUIDE.zh-CN.md')){
+    foreach($needle in @('npm.cmd install -g @openai/codex','codex.cmd --version','codex.cmd','ExecutionPolicy')){
+        if(-not $start.Contains($needle)){throw ('Missing safe npm/PowerShell instruction: '+$needle)}
+    }
+}
+if(Test-Path -LiteralPath $screenshotGuide -PathType Leaf){
+    $screenshotText=[IO.File]::ReadAllText($screenshotGuide)
+    foreach($needle in @('草稿未发送','历史真实只读调用','独立演示数据','没有连接真实 Tunnel','旧 ZIP 内没有本次新图解')){
+        if(-not $screenshotText.Contains($needle)){throw ('Missing screenshot provenance boundary: '+$needle)}
+    }
+    $images=Get-Content -Raw -LiteralPath (Join-Path $root 'docs\images\quickstart\SCREENSHOTS.json') | ConvertFrom-Json
+    $expected=@('01-chatgpt-select-bridge.jpg','02-chatgpt-readonly-prompt.jpg','02-chatgpt-agent-result.jpg',
+        '03-bridge-overview-demo.jpg','04-bridge-native-detail-demo.jpg','05-bridge-native-scroll-demo.jpg',
+        '06-bridge-agents-demo.jpg','07-bridge-diagnostics-demo.jpg')
+    if($images.images.Count -ne $expected.Count){throw 'Screenshot inventory must contain exactly eight reviewed images.'}
+    $seenImages=@{}
+    foreach($image in $images.images){
+        if($image.file -notin $expected -or $seenImages.ContainsKey($image.file) -or
+            $image.privacy_review -ne 'passed' -or [string]::IsNullOrWhiteSpace($image.provenance)){
+            throw 'Unreviewed, duplicate or unexpected screenshot.'
+        }
+        $seenImages[$image.file]=$true
+        $imagePath=Join-Path $root ('docs\images\quickstart\'+$image.file)
+        $bytes=[IO.File]::ReadAllBytes($imagePath)
+        $digest=[Security.Cryptography.SHA256]::Create()
+        try{$actualHash=[BitConverter]::ToString($digest.ComputeHash($bytes)).Replace('-','').ToLowerInvariant()}
+        finally{$digest.Dispose()}
+        if($bytes.Length -ne $image.bytes -or $bytes.Length -lt 200 -or
+            $bytes[0] -ne 255 -or $bytes[1] -ne 216 -or $actualHash -ne $image.sha256){
+            throw ('Screenshot integrity mismatch: '+$image.file)
+        }
+        if(-not $screenshotText.Contains('docs/images/quickstart/'+$image.file)){
+            throw ('Unlinked screenshot: '+$image.file)
+        }
+    }
+    Write-Output 'SCREENSHOT_GUIDE=PASS images=8 provenance=explicit integrity=verified'
 }
 $guide=[IO.File]::ReadAllText((Join-Path $root 'USER-GUIDE.zh-CN.md'))
 foreach($needle in @('升级回滚与卸载','真退出','Scheduled Tasks','已分页加载','DPAPI','可能','get_task_status')){

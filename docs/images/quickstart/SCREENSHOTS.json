@@ -1,0 +1,115 @@
+{
+  "captured_on": "2026-10-10",
+  "product_version": "6.2.0",
+  "frontend_html_sha256": "1999f12ed684a10aa5e1e22818769760a233f40029c1ec959e5051b7b9f174ba",
+  "review_scope": "Manual visual review of each final image; private sidebar, account, actual paths, thread ids and credentials excluded. Demo screenshots are watermarked. No new Codex task was created for this guide.",
+  "images": [
+    {
+      "file": "01-chatgpt-select-bridge.jpg",
+      "bytes": 6049,
+      "sha256": "5413d5f371f6889c37db5bfa55b0ff7e5096e109ebe54e041d98ea266201fa99",
+      "width": 752,
+      "height": 36,
+      "metadata_markers": [
+        "e0",
+        "e2"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "actual-chatgpt-selector-cropped-no-task-submitted",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "02-chatgpt-readonly-prompt.jpg",
+      "bytes": 13605,
+      "sha256": "ebe2186e6203bc7d63ef30b3e875bde145c16a0854a1e709bb386e200029173f",
+      "width": 822,
+      "height": 132,
+      "metadata_markers": [
+        "e0",
+        "e2"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "actual-chatgpt-composer-draft-not-submitted",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "02-chatgpt-agent-result.jpg",
+      "bytes": 69725,
+      "sha256": "0880cdbf6169b52e40aea0d33cdb8b14fe6a6c878b11e5d4e66909ef4441f283",
+      "width": 822,
+      "height": 995,
+      "metadata_markers": [
+        "e0",
+        "e2"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "historical-actual-read-only-tool-result-cropped-not-a-new-test",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "03-bridge-overview-demo.jpg",
+      "bytes": 84755,
+      "sha256": "52120b3c92cd188641ee9d09d41d59b95818bae87fe015899bafa8544d12c7ba",
+      "width": 1400,
+      "height": 900,
+      "metadata_markers": [
+        "e0"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "published-6.2.0-frontend-synthetic-get-only-demo",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "04-bridge-native-detail-demo.jpg",
+      "bytes": 94283,
+      "sha256": "5e19192ad797a2449f51097fb306485c08bd4f3c09749345ec4083837ea3110a",
+      "width": 1400,
+      "height": 900,
+      "metadata_markers": [
+        "e0"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "published-6.2.0-frontend-synthetic-get-only-demo",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "05-bridge-native-scroll-demo.jpg",
+      "bytes": 111379,
+      "sha256": "f81d5c66f91d530a619957079dca8f5a8beb3916687173b9e7c940d43d1891b2",
+      "width": 1400,
+      "height": 900,
+      "metadata_markers": [
+        "e0"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "published-6.2.0-frontend-synthetic-get-only-demo",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "06-bridge-agents-demo.jpg",
+      "bytes": 88449,
+      "sha256": "c747474c9308a989d51b8d67523f87af9b7564b9cf0c08c0835f9eda5938f15f",
+      "width": 1400,
+      "height": 900,
+      "metadata_markers": [
+        "e0"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "published-6.2.0-frontend-synthetic-get-only-demo",
+      "privacy_review": "passed"
+    },
+    {
+      "file": "07-bridge-diagnostics-demo.jpg",
+      "bytes": 81347,
+      "sha256": "afaac938f1249c22d19ea3502d6a3af74a1a01ed0bb856238977fab793c31692",
+      "width": 1400,
+      "height": 900,
+      "metadata_markers": [
+        "e0"
+      ],
+      "exif_xmp_comments": "absent",
+      "provenance": "published-6.2.0-frontend-synthetic-get-only-demo",
+      "privacy_review": "passed"
+    }
+  ]
+}
