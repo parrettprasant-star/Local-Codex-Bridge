@@ -96,13 +96,13 @@ const exitCode = await new Promise((resolvePromise) => {
     if (child.pid && process.platform === "win32") spawnSync("taskkill.exe", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
     else child.kill("SIGTERM");
     resolvePromise(null);
-  }, 8_000);
+  }, 20_000);
   child.once("close", (code) => { clearTimeout(timeout); resolvePromise(code); });
 });
 await new Promise((resolvePromise) => server.close(() => resolvePromise()));
 try { rmSync(profile, { recursive: true, force: true }); } catch { }
 
-const ready = output.includes('data-control-center-ready="true"')
+const ready = exitCode === 0 && output.includes('data-control-center-ready="true"')
   && output.includes('id="page-overview"')
   && output.includes(">总览<")
   && output.includes('class="client-fallback hidden"');

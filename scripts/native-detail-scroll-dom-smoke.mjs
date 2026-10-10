@@ -25,6 +25,15 @@ const fixture = `<!doctype html><html><head><meta charset="utf-8"><style>${style
     document.documentElement.setAttribute("data-native-detail-client-height", String(body.clientHeight));
     document.documentElement.setAttribute("data-native-detail-overflow-y", computed.overflowY);
     document.documentElement.setAttribute("data-native-detail-inner-width", String(window.innerWidth));
+    const header = document.querySelector(".surface-header");
+    const headerTop = header.getBoundingClientRect().top;
+    body.scrollTop = body.scrollHeight;
+    document.documentElement.setAttribute("data-native-detail-bottom", String(body.scrollTop + body.clientHeight >= body.scrollHeight - 1));
+    document.documentElement.setAttribute("data-native-detail-fixed-header", String(header.getBoundingClientRect().top === headerTop));
+    document.documentElement.setAttribute("data-native-detail-no-horizontal-overflow", String(body.scrollWidth <= body.clientWidth));
+    // The geometry is measured with all 80 full turns. Emit only the measured
+    // evidence, not hundreds of kilobytes of fixture text to Chrome dump-dom.
+    document.body.textContent = "Native detail geometry measured";
   } catch (error) {
     document.documentElement.setAttribute("data-native-detail-scroll-error", String(error));
   }
@@ -67,12 +76,15 @@ const exitCode = await new Promise((resolve) => {
     if (child.pid && process.platform === "win32") spawnSync("taskkill.exe", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
     else child.kill("SIGTERM");
     resolve(null);
-  }, 8_000);
+  }, 20_000);
   child.once("close", (code) => { clearTimeout(timeout); resolve(code); });
 });
 await new Promise((resolve) => server.close(() => resolve()));
 try { rmSync(profile, { recursive: true, force: true }); } catch { }
-const pass = exitCode === 0 && output.includes('data-native-detail-scroll-pass="true"');
+const pass = exitCode === 0 && output.includes('data-native-detail-scroll-pass="true"')
+  && output.includes('data-native-detail-bottom="true"')
+  && output.includes('data-native-detail-fixed-header="true"')
+  && output.includes('data-native-detail-no-horizontal-overflow="true"');
 if (!pass) {
   process.stderr.write(JSON.stringify({ exitCode, outputTail: output.slice(-2_000), stderr: errorOutput }, null, 2) + "\n");
   process.exitCode = 1;

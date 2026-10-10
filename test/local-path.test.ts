@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtempSync, mkdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { canonicalizeLocalPath, isWithinLocalRoot, normalizeLocalAbsolutePath } from "../src/local-path.js";
 import { WorkingDirectoryResolver } from "../src/working-directory.js";
@@ -36,7 +35,11 @@ test("POSIX resolver checks realpath, scope, existence and foreign paths before 
 });
 
 test("host-native Unicode project is read-only and survives registry reopening", () => {
-  const root = mkdtempSync(join(tmpdir(), "lcb-project-"));
+  // Hosted Windows TEMP contains RUNNER~1; exercise a real long directory,
+  // without weakening the product's deliberate short-path rejection.
+  const parent = join(process.cwd(), ".staging");
+  mkdirSync(parent, { recursive: true });
+  const root = mkdtempSync(join(parent, "lcb-project-"));
   try {
     const project = join(root, "项目 空格"); mkdirSync(project);
     const file = join(root, "projects.json");

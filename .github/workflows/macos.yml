@@ -1,7 +1,7 @@
 name: macOS preview validation
 on:
   push:
-    branches: [main, 'codex/cross-platform-onboarding']
+    branches: [main]
   pull_request:
     branches: [main]
 permissions:
@@ -56,5 +56,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: macos-preview-${{ matrix.runner }}
-          path: artifacts/macos-preview
+          path: |
+            artifacts/LocalCodexBridge-macos-*-preview.tar.gz
+            artifacts/SHA256SUMS-macos-*.txt
           if-no-files-found: error

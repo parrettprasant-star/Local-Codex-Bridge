@@ -20,10 +20,10 @@
 
 在 [GitHub Releases](https://github.com/parrettprasant-star/Local-Codex-Bridge/releases) 选择与芯片一致的 Mac **preview**：M 系列 `macos-arm64`，Intel `macos-x64`。只看到 `windows-x64` 就不能当成 Mac 软件。没有 Mac 包时等待，或在独立源码 checkout 构建；不猜下载地址、不复制 Windows `.exe`。
 
-解压到用户可写目录，例如 `~/Applications/LocalCodexBridge`，不要覆盖现有版本。下载可信 SHA256SUMS 后检查 ZIP：
+解压到用户可写目录，例如 `~/Applications/LocalCodexBridge`，不要覆盖现有版本。Mac 包使用 `.tar.gz` 保留 Tunnel 的执行权限；下载可信 SHA256SUMS 后检查压缩包：
 
 ```sh
-shasum -a 256 "$HOME/Downloads/LocalCodexBridge-macos-arm64-preview.zip"
+shasum -a 256 "$HOME/Downloads/LocalCodexBridge-macos-arm64-preview.tar.gz"
 ```
 
 替换成实际文件名，与可信发布页比较。校验不等于代码签名。本社区 Mac binary 未公证；被 Gatekeeper 拦截时先核验来源/架构，不关闭系统保护，不擅自执行 `xattr -dr`。

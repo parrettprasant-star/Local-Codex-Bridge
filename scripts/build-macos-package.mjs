@@ -1,8 +1,8 @@
 // Independently gated preview package; never rewrites the Windows release.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const work = resolve(process.argv[2] || ".staging/mac-tunnel-build");
@@ -60,7 +60,7 @@ writeFileSync(join(output, "tunnel-client.version.txt"), "0.0.16-lcb.1 (communit
 cpSync(join(root, ".staging", "dist", "src"), join(output, "dist", "src"), { recursive: true });
 mkdirSync(join(output, "scripts"));
 copyFileSync(join(root, "scripts", "macos-bridge.mjs"), join(output, "scripts", "macos-bridge.mjs"));
-for (const file of ["LICENSE", "MACOS.zh-CN.md", "CHATGPT-PLUGIN-SETUP.zh-CN.md", "CHATGPT-PROMPTS.zh-CN.md", "START-HERE.zh-CN.md", "USER-GUIDE.zh-CN.md", "SCREENSHOT-GUIDE.zh-CN.md", "SECURITY.md", "TUNNEL-SETUP.md", "PRIVACY-RELEASE.zh-CN.md"]) copyFileSync(join(root, file), join(output, file));
+for (const file of ["README.md", "LICENSE", "MACOS.zh-CN.md", "CHATGPT-PLUGIN-SETUP.zh-CN.md", "CHATGPT-PROMPTS.zh-CN.md", "START-HERE.zh-CN.md", "USER-GUIDE.zh-CN.md", "SCREENSHOT-GUIDE.zh-CN.md", "SECURITY.md", "TUNNEL-SETUP.md", "PRIVACY-RELEASE.zh-CN.md"]) copyFileSync(join(root, file), join(output, file));
 cpSync(join(root, "docs", "images", "quickstart"), join(output, "docs", "images", "quickstart"), { recursive: true });
 copyFileSync(join(root, "projects.json.example"), join(output, "projects.json.example"));
 const manifest = [];
@@ -77,4 +77,21 @@ function collect(directory, prefix = "") {
 }
 collect(output);
 writeFileSync(join(output, "PACKAGE-MANIFEST.json"), JSON.stringify({ platform: "darwin", architecture: process.arch, channel: "preview", files: manifest }, null, 2));
+// upload-artifact loses executable permission on loose files. Distribute an
+// archive and verify extraction, hashes and executable mode before uploading.
+const archiveName = `LocalCodexBridge-macos-${process.arch}-preview.tar.gz`;
+const releaseArchive = join(dirname(output), archiveName);
+if (existsSync(releaseArchive)) throw new Error("Refuse to replace a release archive");
+run("/usr/bin/tar", ["-czf", releaseArchive, "-C", dirname(output), basename(output)]);
+const extracted = join(work, "archive-readback");
+mkdirSync(extracted);
+run("/usr/bin/tar", ["-xzf", releaseArchive, "-C", extracted]);
+const unpacked = join(extracted, basename(output));
+for (const item of [...manifest, { file: "PACKAGE-MANIFEST.json", sha256: createHash("sha256").update(readFileSync(join(output, "PACKAGE-MANIFEST.json"))).digest("hex") }]) {
+  if (createHash("sha256").update(readFileSync(join(unpacked, item.file))).digest("hex") !== item.sha256) throw new Error("Archive readback mismatch: " + item.file);
+}
+if (!(statSync(join(unpacked, "tunnel-client")).mode & 0o111)) throw new Error("Archive lost executable permission");
+run(join(unpacked, "tunnel-client"), ["version"]);
+writeFileSync(join(dirname(output), `SHA256SUMS-macos-${process.arch}.txt`), createHash("sha256").update(readFileSync(releaseArchive)).digest("hex") + "  " + archiveName + "\n");
 console.log("MACOS_PACKAGE=PASS arch=" + process.arch + " known_vulnerability_scan=PASS");
+console.log("MACOS_ARCHIVE_READBACK=PASS executable_mode=preserved");
