@@ -3,6 +3,18 @@ import { TaskStatusServer as ProductionTaskStatusServer } from "../src/status-se
 
 type ServerArguments = ConstructorParameters<typeof ProductionTaskStatusServer>;
 
+export function shouldRetryAutomaticTestPort(
+  requestedPort: number,
+  code: string | undefined,
+  attempt: number,
+  platform: NodeJS.Platform = process.platform,
+): boolean {
+  // Windows may deny a randomly selected reserved port with EACCES instead of
+  // EADDRINUSE. Retry only automatic test allocation, never an explicit port.
+  return requestedPort === 0 && attempt < 15 &&
+    (code === "EADDRINUSE" || (platform === "win32" && code === "EACCES"));
+}
+
 // Exercise the real local-client handshake. This is not a production bypass.
 export async function authorizedLocalFetch(base: string): Promise<typeof fetch> {
   const session = await globalThis.fetch(new URL("/api/local-session", base), {
@@ -44,7 +56,7 @@ export class TaskStatusServer {
         return await this.#server.start();
       } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
-        if (this.#arguments[3].port !== 0 || code !== "EADDRINUSE" || attempt === 15) throw error;
+        if (!shouldRetryAutomaticTestPort(this.#arguments[3].port, code, attempt)) throw error;
         await this.#server.close();
         this.#server = this.#create();
       }

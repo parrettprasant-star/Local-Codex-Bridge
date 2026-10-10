@@ -10,7 +10,21 @@ import { readBuildIdentity } from "../src/build-identity.js";
 import { TaskManager } from "../src/task-manager.js";
 import { TaskRuntime } from "../src/task-runtime.js";
 import { TaskStatusStore } from "../src/task-status.js";
-import { TaskStatusServer } from "./browser-safe-status-server.js";
+import { TaskStatusServer, shouldRetryAutomaticTestPort } from "./browser-safe-status-server.js";
+
+test("test port allocation retries Windows denied ports without hiding fixed-port or terminal failures", () => {
+  assert.equal(shouldRetryAutomaticTestPort(0, "EACCES", 0, "win32"), true);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EADDRINUSE", 14, "win32"), true);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EACCES", 14, "win32"), true);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EACCES", 15, "win32"), false);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EADDRINUSE", 15, "win32"), false);
+  assert.equal(shouldRetryAutomaticTestPort(37931, "EACCES", 0, "win32"), false);
+  assert.equal(shouldRetryAutomaticTestPort(37931, "EADDRINUSE", 0, "win32"), false);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EACCES", 0, "linux"), false);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EADDRINUSE", 0, "linux"), true);
+  assert.equal(shouldRetryAutomaticTestPort(0, "EINVAL", 0, "win32"), false);
+  assert.equal(shouldRetryAutomaticTestPort(0, undefined, 0, "win32"), false);
+});
 
 function fixture() {
   const directory = mkdtempSync(join(tmpdir(), "bridge-local-http-"));
