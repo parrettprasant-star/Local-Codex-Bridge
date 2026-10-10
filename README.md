@@ -2,6 +2,11 @@
 
 **ChatGPT ↔ local Codex Agent control center for Windows.**
 
+让 ChatGPT 通过 MCP 连接你自己电脑上的 Codex：Windows 本地 Agent 控制中心，
+提供持久会话查看、独立任务监督和结果摘要。Local Codex Bridge is a
+**ChatGPT–Codex bridge / local Agent gateway / MCP server** with a Windows
+Control Center and user-owned Secure MCP Tunnel connections.
+
 Community software, not an official OpenAI product. Version 6.2.0 is an unsigned
 Windows community package. Published downloads and checksums are listed in
 [GitHub Releases](https://github.com/parrettprasant-star/Local-Codex-Bridge/releases).
@@ -31,12 +36,20 @@ Windows ZIP 不包含 Node、你的 Codex 安装或账号认证。`install.cmd` 
 （选择 `LocalCodexBridge-6.2.0-windows-x64.zip` 和 `SHA256SUMS.txt`；源码包供开发者使用）。
 
 - [完整使用手册](USER-GUIDE.zh-CN.md)：页面、任务、历史、排错、升级/回滚/卸载。
-- [截图操作流程](SCREENSHOT-GUIDE.zh-CN.md)：选择 ChatGPT 插件、只读检查、查看任务与会话、AGENTS 和诊断；真实记录与演示环境分开标注。
+- [截图操作流程](SCREENSHOT-GUIDE.zh-CN.md)：从“添加 → 添加自定义 MCP 服务器”开始，填写连接信息、授权、选择插件，再查看任务与会话；真实记录与演示环境分开标注。
 - [可复制指令](CHATGPT-PROMPTS.zh-CN.md)：AI 辅助安装、连接检查、第一次只读任务。
 - [隐私与公开边界](PRIVACY-RELEASE.zh-CN.md)：哪些不上传、使用时哪些内容可能发给 ChatGPT。
 
 账号登录、自己的 Tunnel 注册/key 和 ChatGPT 授权仍需本人完成。
 安装脚本不下载未知代码、不开启自启动、不自动执行任务。
+
+## Feedback / 使用反馈
+
+遇到安装、连接或使用问题，请到 [Issues](https://github.com/parrettprasant-star/Local-Codex-Bridge/issues)
+提问或补充评论。提交版本、错误摘要和经过脱敏的截图即可；不要公开运行密钥、
+账号信息、私人聊天、完整诊断 JSON 或真实项目文件。不要把自己的 Tunnel ID
+作为公开共享连接。GitHub 反馈需要登录使用者自己的 GitHub 账号，不需要维护者
+逐个授权；这不是 ChatGPT 插件商店的公开评论区。
 
 ## Install / upgrade / rollback
 

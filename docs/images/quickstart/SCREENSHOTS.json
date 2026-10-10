@@ -5,6 +5,17 @@
   "review_scope": "Manual visual review of each final image; private sidebar, account, actual paths, thread ids and credentials excluded. Demo screenshots are watermarked. No new Codex task was created for this guide.",
   "images": [
     {
+      "file": "00-chatgpt-add-custom-mcp.png",
+      "bytes": 34691,
+      "sha256": "f9c736ec89214a4ceef4b71020d22c21435be7bc0967fe892a3ccc303a156c3f",
+      "width": 1035,
+      "height": 408,
+      "metadata_chunks": ["IHDR", "IDAT", "IEND"],
+      "exif_xmp_comments": "absent",
+      "provenance": "user-provided-actual-chatgpt-add-menu-no-form-or-registration-shown",
+      "privacy_review": "passed"
+    },
+    {
       "file": "01-chatgpt-select-bridge.jpg",
       "bytes": 6049,
       "sha256": "5413d5f371f6889c37db5bfa55b0ff7e5096e109ebe54e041d98ea266201fa99",

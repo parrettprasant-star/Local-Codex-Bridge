@@ -6,10 +6,40 @@
 
 ## 图片说明：真实记录与演示必须分开
 
+- **图 0：用户提供的真实 ChatGPT“添加”菜单。** 只说明首次添加入口，没有展示或提交配置表单；已有插件条目不是公共连接模板。图片不含账号、Tunnel ID 或密钥。
 - **图 1、图 2：真实 ChatGPT 网页操作。** 展示选择插件和填写只读指令；输入框里的示例没有发送，不能当作任务执行成功证据。
 - **图 3：此前实际只读调用的成功记录。** 这是历史记录，不是本轮新执行的任务，也不证明读项目、写文件或控制一个 Native Turn 成功。
 - **图 4～图 8：真实发布版前端 + 独立演示数据。** 页面来自 6.2.0 的界面代码，截图角落标有“图文教程演示”。没有连接真实 Tunnel，没有执行 Codex，没有读取私人会话；示例状态和内容只说明按钮位置及布局。
 - 图片已排除私人侧栏、账号、项目标题、实际用户路径、真实 Thread ID 和密钥。`C:\Projects\Demo` 与 `demo-thread-readonly` 都是演示值，不是可直接复制使用的真实项目/线程。
+
+## 添加之前：首次把本机 Bridge 接入 ChatGPT
+
+第一次使用不要直接跳到输入 `@`。先完成下面这段，创建属于自己的连接：
+
+1. 桌面打开 Bridge，诊断确认 Tunnel registration / Plugin transport 已就绪。
+2. 打开 [ChatGPT 插件页](https://chatgpt.com/plugins)，点击右上角 **添加 → 添加自定义 MCP 服务器**。
+3. 不选择“创建插件”或“上传插件压缩包”；Windows 运行 ZIP 不需要上传到 ChatGPT。
+
+![图 0：ChatGPT 插件页“添加”菜单中的“添加自定义 MCP 服务器”](docs/images/quickstart/00-chatgpt-add-custom-mcp.png)
+
+接下来表单按 [逐项填写说明](START-HERE.zh-CN.md#52-逐项填写自己的连接信息) 操作：
+
+| 项目 | 填写 / 操作 |
+|---|---|
+| 名称 | `Local Codex Bridge` |
+| 描述（如有） | 说明它连接你本机 Codex，用于会话、任务监督和结果读取 |
+| Connection / 连接 | **Tunnel / 隧道** |
+| Tunnel ID | 自己的注册，与本机 Bridge 中同一个 Tunnel ID |
+| Authentication（如有） | 本版本 **No authentication / 无身份验证**；Tunnel 访问权限仍生效 |
+| 创建与授权 | 阅读风险提示 → **创建为插件** → 按页面安装 / 连接；首次授权由本人确认 |
+
+**Runtime API Key 只保存在本机 Bridge 配置向导，不填到 ChatGPT 表单或聊天中。**
+不填写 localhost 状态 URL，不复制他人的 Tunnel。没有添加入口或 Tunnel 选项时，
+先检查自己的账号、工作区与 Platform 权限，不通过关闭防护、删除数据或重建账号来解决。
+
+创建后先看插件工具详情，应能发现 13 个工具；再开新对话，按下面第一步选择插件。
+图 0 中下方已有的插件卡片是截图提供者的既有条目，不意味着新用户已自动连接。
+菜单图不证明表单提交、授权或远程调用已经成功。[官方连接流程](https://developers.openai.com/plugins/deploy/connect-chatgpt)。
 
 ## 第一步：在 ChatGPT 选择 Bridge
 

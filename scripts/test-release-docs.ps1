@@ -60,7 +60,8 @@ foreach($needle in @('先看这一页：安装路线','成功标志','Download Z
     if(-not $start.Contains($needle)){throw ('Missing beginner action/acceptance guidance: '+$needle)}
 }
 if($start.Contains('SCREENSHOT-GUIDE.zh-CN.md')){
-    foreach($needle in @('npm.cmd install -g @openai/codex','codex.cmd --version','codex.cmd','ExecutionPolicy')){
+    foreach($needle in @('npm.cmd install -g @openai/codex','codex.cmd --version','codex.cmd','ExecutionPolicy',
+        '添加自定义 MCP 服务器','同一个 Tunnel ID','创建为插件','首次授权')){
         if(-not $start.Contains($needle)){throw ('Missing safe npm/PowerShell instruction: '+$needle)}
     }
 }
@@ -70,10 +71,10 @@ if(Test-Path -LiteralPath $screenshotGuide -PathType Leaf){
         if(-not $screenshotText.Contains($needle)){throw ('Missing screenshot provenance boundary: '+$needle)}
     }
     $images=Get-Content -Raw -LiteralPath (Join-Path $root 'docs\images\quickstart\SCREENSHOTS.json') | ConvertFrom-Json
-    $expected=@('01-chatgpt-select-bridge.jpg','02-chatgpt-readonly-prompt.jpg','02-chatgpt-agent-result.jpg',
+    $expected=@('00-chatgpt-add-custom-mcp.png','01-chatgpt-select-bridge.jpg','02-chatgpt-readonly-prompt.jpg','02-chatgpt-agent-result.jpg',
         '03-bridge-overview-demo.jpg','04-bridge-native-detail-demo.jpg','05-bridge-native-scroll-demo.jpg',
         '06-bridge-agents-demo.jpg','07-bridge-diagnostics-demo.jpg')
-    if($images.images.Count -ne $expected.Count){throw 'Screenshot inventory must contain exactly eight reviewed images.'}
+    if($images.images.Count -ne $expected.Count){throw 'Screenshot inventory must contain exactly nine reviewed images.'}
     $seenImages=@{}
     foreach($image in $images.images){
         if($image.file -notin $expected -or $seenImages.ContainsKey($image.file) -or
@@ -86,15 +87,21 @@ if(Test-Path -LiteralPath $screenshotGuide -PathType Leaf){
         $digest=[Security.Cryptography.SHA256]::Create()
         try{$actualHash=[BitConverter]::ToString($digest.ComputeHash($bytes)).Replace('-','').ToLowerInvariant()}
         finally{$digest.Dispose()}
+        $validSignature=if($image.file.EndsWith('.png')){
+            [BitConverter]::ToString($bytes,0,8) -eq '89-50-4E-47-0D-0A-1A-0A'
+        }else{$bytes.Length -ge 2 -and $bytes[0] -eq 255 -and $bytes[1] -eq 216}
         if($bytes.Length -ne $image.bytes -or $bytes.Length -lt 200 -or
-            $bytes[0] -ne 255 -or $bytes[1] -ne 216 -or $actualHash -ne $image.sha256){
+            -not $validSignature -or $actualHash -ne $image.sha256){
             throw ('Screenshot integrity mismatch: '+$image.file)
         }
         if(-not $screenshotText.Contains('docs/images/quickstart/'+$image.file)){
             throw ('Unlinked screenshot: '+$image.file)
         }
     }
-    Write-Output 'SCREENSHOT_GUIDE=PASS images=8 provenance=explicit integrity=verified'
+    foreach($needle in @('添加自定义 MCP 服务器','同一个 Tunnel ID','创建为插件','首次授权')){
+        if(-not $screenshotText.Contains($needle)){throw ('Missing illustrated ChatGPT connection step: '+$needle)}
+    }
+    Write-Output ('SCREENSHOT_GUIDE=PASS images='+$expected.Count+' provenance=explicit integrity=verified chatgpt_setup=explicit')
 }
 $guide=[IO.File]::ReadAllText((Join-Path $root 'USER-GUIDE.zh-CN.md'))
 foreach($needle in @('升级回滚与卸载','真退出','Scheduled Tasks','已分页加载','DPAPI','可能','get_task_status')){

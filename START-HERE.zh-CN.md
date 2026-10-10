@@ -159,15 +159,55 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-portable.ps1 -
 
 ## 5. 在 ChatGPT 连接
 
-1. 使用 ChatGPT 网页，打开 [Plugins](https://chatgpt.com/plugins)/自定义 MCP 管理页。入口名称可能因界面语言/账号政策不同；没有此入口先核对官方权限，而不是反复安装 Bridge。
-2. 添加 custom MCP server，名称填 Local Codex Bridge。
-3. Connection 选择 **Tunnel**，选择自己的 Tunnel 或填写同一个 ID。
-4. 如果表单要求 Authentication，本版本 Bridge MCP stdio 本身没有 OAuth 登录服务，选择 **No authentication / 无身份验证**；Tunnel 的账号权限和运行 key 仍单独生效。不要把 Runtime API Key 填进 OAuth Client ID/Secret，也不要把它发给 ChatGPT。只有自行部署了额外认证层的高级用户才应按其服务选择其他方式。
-5. 阅读风险提示并自行授权，创建后安装/连接这个插件；仅创建条目还不等于当前对话已可调用。
-6. 确认扫描到 13 个工具，包括 get_agent_list / get_capabilities。注意工具可能被手动禁用，先看插件详情。
-7. 开一个新对话，输入 `@` 选择 Local Codex Bridge，再发送下面的第一条指令。
+### 5.1 找到正确的添加入口
 
-这是私有连接，不要把 `127.0.0.1` 状态地址作为公网 MCP URL，也不要求你的电脑直连 OpenAI internal gateway。[官方步骤](https://developers.openai.com/plugins/deploy/connect-chatgpt)。
+先保持本机 Bridge 运行，在诊断里确认 Tunnel registration / Plugin transport 已就绪。
+然后使用自己的 ChatGPT 账号打开 [插件页面](https://chatgpt.com/plugins)。
+
+**右上角“添加” → “添加自定义 MCP 服务器”**，就是本软件的首次连接入口。
+不是“创建插件”，也不是“上传插件压缩包”；不用把 Windows ZIP 上传到 ChatGPT。
+入口名称可能因界面语言/账号政策不同。没有入口先核对账号及工作区权限，
+不是反复安装 Bridge 或绕过管理员限制。
+
+![ChatGPT 插件页的添加菜单：选择添加自定义 MCP 服务器](docs/images/quickstart/00-chatgpt-add-custom-mcp.png)
+
+这张图只展示菜单位置。下方已有的 Local Codex Bridge 是截图提供者之前创建的
+条目，不会自动出现在新用户账号中，也不是可供所有人共用的连接。
+
+### 5.2 逐项填写自己的连接信息
+
+| 表单字段 / 操作 | 怎么填写 |
+|---|---|
+| 名称 / Name | `Local Codex Bridge` |
+| 描述 / Description（如有） | `通过私有 MCP Tunnel 连接我本机的 Codex，查看会话、监督任务并读取结果。` |
+| 连接方式 / Connection | 选择 **Tunnel / 隧道**，不是普通 Server URL |
+| Tunnel | 选择自己的 Tunnel，或填写与 Bridge 配置向导中**同一个 Tunnel ID** |
+| 身份验证 / Authentication（如有） | 本版本选择 **No authentication / 无身份验证**，说明见下方 |
+| 风险提示 | 阅读本地访问范围，由你本人确认授权 |
+| 创建 | 点击 **Create as a plugin / 创建为插件**；实际中文按钮名称以自己的页面为准 |
+
+本版本 Bridge MCP stdio 本身没有 OAuth 登录服务，所以这里选择无身份验证；
+**并不表示你的私有 Tunnel 对任何人开放**，Tunnel 的账号、工作区权限和运行 key
+仍单独生效。Runtime API Key 只填在本机 Bridge 配置向导中，不填进 ChatGPT 的
+OAuth Client ID / Secret、描述、聊天内容或截图。只有自行部署了额外认证层的
+高级用户才应按其服务选择其他方式。
+
+这是私有连接，不要把 `127.0.0.1`、`/status`、`/app` 状态地址作为公网 MCP URL，
+也不要求你的电脑直连 OpenAI internal gateway。如果自己的 Tunnel 没有列出，
+先检查它是否关联了当前 ChatGPT 工作区，以及自己是否具有相应 Tunnel 使用权限。
+不要复制维护者或别人的 Tunnel。[官方步骤](https://developers.openai.com/plugins/deploy/connect-chatgpt)。
+
+### 5.3 安装、首次授权并在对话中选择
+
+1. 创建后查看插件详情，确认发现 **13 个工具**，包括 `get_agent_list` / `get_capabilities`。
+2. 按页面显示完成“安装 / 连接”。**首次授权**出现“连接 Local Codex Bridge”提示时，由本人核对后允许；不要把看到插件卡片当成已连接。
+3. 开一个新对话，在输入框输入 `@Local`，选择 **Local Codex Bridge**。看到输入框里的插件标识后，再发送下面的只读检查指令。
+4. 确认工具没有被手动关闭。只是输入软件名称、上传 ZIP，或者让 ChatGPT 普通文字回答“已连接”，都不算成功。
+
+连接失败时先停在真实错误：没有入口是权限问题；Tunnel 未列出先核对工作区关联；
+只看到旧 7 个工具时核对运行版本，在现有插件详情尝试“刷新”并开新对话；
+刷新报错、`Session terminated` 或 404 时检查 Bridge 诊断与当前 Tunnel 绑定，
+不要把本地 `tools/list` 成功当作 ChatGPT Cloud 已连通，不直接删除重建 App、清缓存或删除会话。
 
 ### 第一条：只验证连接，不执行任务
 
