@@ -52,7 +52,7 @@ jobs:
       - name: Verify actual Tunnel config and CLI (no key or cloud request)
         run: |
           artifacts/macos-preview/tunnel-client run --help > /dev/null
-          artifacts/macos-preview/tunnel-client version
+          artifacts/macos-preview/tunnel-client --version
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: macos-preview-${{ matrix.runner }}

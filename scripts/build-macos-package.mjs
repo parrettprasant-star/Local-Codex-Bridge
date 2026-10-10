@@ -92,7 +92,7 @@ for (const item of [...manifest, { file: "PACKAGE-MANIFEST.json", sha256: create
   if (createHash("sha256").update(readFileSync(join(unpacked, item.file))).digest("hex") !== item.sha256) throw new Error("Archive readback mismatch: " + item.file);
 }
 if (!(statSync(join(unpacked, "tunnel-client")).mode & 0o111)) throw new Error("Archive lost executable permission");
-run(join(unpacked, "tunnel-client"), ["version"]);
+run(join(unpacked, "tunnel-client"), ["--version"]);
 writeFileSync(join(dirname(output), `SHA256SUMS-macos-${process.arch}.txt`), createHash("sha256").update(readFileSync(releaseArchive)).digest("hex") + "  " + archiveName + "\n");
 console.log("MACOS_PACKAGE=PASS arch=" + process.arch + " known_vulnerability_scan=PASS");
 console.log("MACOS_ARCHIVE_READBACK=PASS executable_mode=preserved");
