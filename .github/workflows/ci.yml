@@ -85,7 +85,8 @@ jobs:
           ./windows/desktop/test-portable.ps1 -PackageDirectory artifacts/Dev1
           ./windows/desktop/test-preview-host.ps1 -PackageDirectory artifacts/Dev1
 
-      - name: Control Center DOM and independent detail scroll
-        run: |
-          npm run test:control-center-dom
-          npm run test:control-center-native-detail
+      - name: Control Center real mounted DOM
+        run: npm run test:control-center-dom
+
+      - name: Native detail independent scroll
+        run: npm run test:control-center-native-detail
