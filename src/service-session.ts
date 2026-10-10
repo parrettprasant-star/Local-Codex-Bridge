@@ -8,6 +8,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, isAbsolute, join, resolve, win32 } from "node:path";
+import { normalizeLocalAbsolutePath, canonicalizeLocalPath } from "./local-path.js";
 
 export const SERVICE_SESSION_FILE_ENV = "LOCAL_CODEX_BRIDGE_SERVICE_SESSIONS_FILE";
 export const SERVICE_THREAD_MAX_TURNS_ENV = "LOCAL_CODEX_BRIDGE_SERVICE_THREAD_MAX_TURNS";
@@ -110,19 +111,22 @@ function sessionStatus(value: unknown): ServiceSessionStatus {
 }
 
 function normalizeWorkspace(value: string): string {
-  if (value.includes("\0") || !/^[A-Za-z]:[\\/]/.test(value) || !win32.isAbsolute(value)) {
-    throw new Error("service session workspace must be an absolute Windows drive-letter path");
-  }
-  return win32.normalize(value);
+  const normalized = normalizeLocalAbsolutePath(value);
+  // Preserve persisted Windows identities, including trailing slash semantics.
+  return normalized.startsWith("/") ? normalized : win32.normalize(value);
+}
+
+function workspaceIdentity(workspace: string): string {
+  return workspace.startsWith("/") ? canonicalizeLocalPath(workspace) : workspace.toLowerCase();
 }
 
 function keyFor(kind: ServiceSessionKind, workspace: string): string {
-  return `${kind}:${workspace.toLowerCase()}`;
+  return `${kind}:${workspaceIdentity(workspace)}`;
 }
 
 function stableSessionId(kind: ServiceSessionKind, workspace: string, generation: number): string {
   const digest = createHash("sha256")
-    .update(`${kind}\0${workspace.toLowerCase()}\0${generation}`, "utf8")
+    .update(`${kind}\0${workspaceIdentity(workspace)}\0${generation}`, "utf8")
     .digest("hex")
     .slice(0, 24);
   return `bridge-${kind}-${digest}`;
@@ -282,7 +286,7 @@ export class ServiceSessionStore {
     const nextGeneration = generation ?? Math.max(
       -1,
       ...this.#snapshot.sessions
-        .filter((session) => session.kind === kind && session.workspace.toLowerCase() === workspace.toLowerCase())
+        .filter((session) => session.kind === kind && workspaceIdentity(session.workspace) === workspaceIdentity(workspace))
         .map((session) => session.generation),
     ) + 1;
     const now = this.#clock().toISOString();

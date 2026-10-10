@@ -25,9 +25,22 @@ evidence. SHA256 identifies the chosen binary; a local PASS is not hosted CI.
 
 - [x] Confirm exact repository, account permission, branch and public files.
 - [x] Review sanitized source snapshot/diff, release notes and artifact hashes.
-- [ ] Run checked-in Windows CI on the approved GitHub revision successfully.
-- [ ] Upload verified source/Windows assets and checksum manifest.
-- [ ] Read back the public release page and verify downloaded asset hashes.
+- [x] Windows CI passed on the approved v6.2.0 publication revision; later main
+  documentation/test updates independently passed run 38027772261.
+- [x] Verified source/Windows assets and checksum manifest published as v6.2.0.
+- [x] Public release and downloaded hashes read back; no v6.2.0 asset replaced.
+
+## Separate macOS preview gates (not inherited from Windows)
+
+- [ ] Real macOS 15 Intel / Apple Silicon CI: path, scopes, stdio catalog, lazy
+  native adapter, private Keychain readback and three isolated child restarts.
+- [ ] Real Mac Chromium mounted DOM and independent Native detail scroll.
+- [ ] Architecture-matched Tunnel repair build, provenance, dependency licenses,
+  known vulnerability scan and clean package manifest.
+- [ ] Real macOS user/ChatGPT Cloud discovery and task acceptance. A fake executor
+  smoke is labelled fake; it does not satisfy this gate.
+- [ ] macOS packaged startup / Ctrl+C cleanup and interrupted recovery with real
+  own Tunnel. No notarization is claimed; absent gate means preview, not stable.
 
 The community package is **unsigned**. Do not label it signed, official, Store
 approved, or universally provisioned. Code signing needs a real publisher

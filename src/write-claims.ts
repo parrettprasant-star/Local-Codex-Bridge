@@ -1,4 +1,5 @@
 import path from "node:path";
+import { canonicalizeLocalPath, isWithinLocalRoot } from "./local-path.js";
 
 const WINDOWS_PATH_LIMIT = 1_000;
 
@@ -64,15 +65,13 @@ export function canonicalizeWindowsPath(value: string): string {
 }
 
 export function pathsOverlap(left: string, right: string): boolean {
-  const a = canonicalizeWindowsPath(left);
-  const b = canonicalizeWindowsPath(right);
-  return a === b || a.startsWith(b + "\\") || b.startsWith(a + "\\");
+  return isWithinLocalRoot(left, right) || isWithinLocalRoot(right, left);
 }
 
 export function normalizeWriteRoots(roots: readonly string[]): string[] {
   const unique = new Set<string>();
   for (const root of roots) {
-    unique.add(canonicalizeWindowsPath(root));
+    unique.add(canonicalizeLocalPath(root));
   }
   return [...unique].sort();
 }

@@ -5,6 +5,7 @@ import type {
   TaskSubmissionResult,
 } from "./ephemeral-scheduler.js";
 import { WorkingDirectoryResolver } from "./working-directory.js";
+import { normalizeLocalAbsolutePath } from "./local-path.js";
 
 export interface TaskCancellationResult {
   accepted: boolean;
@@ -25,12 +26,9 @@ export class TaskService {
   }
 
   submit(input: TaskDefinitionInput): TaskSubmissionResult {
-    if (!this.#workingDirectoryResolver && !/^[A-Za-z]:[\\/]/.test(input.cwd)) {
-      throw new Error("cwd must be an absolute Windows drive-letter path");
-    }
     const cwd = this.#workingDirectoryResolver
       ? this.#workingDirectoryResolver.resolve(input.cwd).safe_process_cwd
-      : input.cwd;
+      : normalizeLocalAbsolutePath(input.cwd);
     const definition = normalizeTaskDefinition({ ...input, cwd });
     return this.#scheduler.submit(definition);
   }
@@ -46,12 +44,14 @@ export class TaskService {
         task,
       };
     }
-    if (!task.cwd || !/^[A-Za-z]:[\\/]/.test(task.cwd)) {
+    let validCwd = false;
+    try { if (task.cwd) { normalizeLocalAbsolutePath(task.cwd); validCwd = true; } } catch { /* no executable cwd */ }
+    if (!validCwd || !task.cwd) {
       return {
         accepted: false,
         task_id: taskId,
         status: "RECOVERY_REQUIRED",
-        reason: task.cwd ? "task has no valid durable Windows cwd" : "task has no durable cwd",
+        reason: task.cwd ? "task has no valid durable local cwd" : "task has no durable cwd",
         task,
       };
     }

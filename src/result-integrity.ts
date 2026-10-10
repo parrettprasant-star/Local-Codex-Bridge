@@ -1,8 +1,6 @@
 import { statSync } from "node:fs";
 
-import {
-  canonicalizeWindowsPath,
-} from "./write-claims.js";
+import { canonicalizeLocalPath, isWithinLocalRoot } from "./local-path.js";
 import type { TaskRecord } from "./task-manager.js";
 import type {
   ResultIntegrity,
@@ -23,7 +21,7 @@ export interface ResultIntegrityOptions {
 }
 
 function isWithinScope(candidate: string, roots: readonly string[]): boolean {
-  return roots.some((root) => candidate === root || candidate.startsWith(root + "\\"));
+  return roots.some((root) => isWithinLocalRoot(root, candidate));
 }
 
 function canonicalRoots(task: TaskRecord): string[] {
@@ -32,7 +30,7 @@ function canonicalRoots(task: TaskRecord): string[] {
   for (const root of roots) {
     if (!root) continue;
     try {
-      normalized.add(canonicalizeWindowsPath(root));
+      normalized.add(canonicalizeLocalPath(root));
     } catch {
       // Invalid task roots make output verification fail closed below.
     }
@@ -92,7 +90,7 @@ export function verifyResultIntegrity(
   const check = (path: string, expectedType: "file" | "directory"): void => {
     let canonical: string;
     try {
-      canonical = canonicalizeWindowsPath(path);
+      canonical = canonicalizeLocalPath(path);
     } catch {
       outOfScopePaths += 1;
       const result = entry(path, expectedType, { verification: "OUT_OF_SCOPE" });
