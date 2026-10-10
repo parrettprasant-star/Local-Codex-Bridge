@@ -45,6 +45,8 @@ export function childEnvironment(state, generation, ownerPid, config, source = p
     LOCAL_CODEX_BRIDGE_STATUS_FILE: join(state, "task_status.json"),
     LOCAL_CODEX_BRIDGE_STATUS_URL_FILE: join(state, "status-url.json"),
     LOCAL_CODEX_BRIDGE_PROJECTS_FILE: join(state, "projects.json"),
+    LOCAL_CODEX_BRIDGE_CHECKPOINT_DIR: join(state, "checkpoints"),
+    LOCAL_CODEX_BRIDGE_SERVICE_SESSIONS_FILE: join(state, "service_sessions.json"),
     LOCAL_CODEX_BRIDGE_TUNNEL_STATE_FILE: join(state, "tunnel-state.json"),
     LOCAL_CODEX_BRIDGE_STATUS_PORT: "0",
   });
@@ -161,6 +163,7 @@ async function mcpChild(state) {
   if (!generation || !Number.isInteger(owner) || !alive(owner)) throw new Error("MCP child 缺少有效 launcher ownership");
   const identity = { generation, pid: process.pid, parent_pid: process.ppid, launcher_pid: owner, started_at: new Date().toISOString() };
   writePrivate(join(state, "child-identity.json"), identity);
+  process.chdir(root); // build identity and optional static files use package cwd
   const timer = setInterval(() => {
     const lock = readJson(join(state, "launcher.lock"));
     const stop = readJson(join(state, "stop.json"));

@@ -24,6 +24,8 @@ test("Mac profile quotes paths, keeps key out of config/argv and isolates Bridge
   assert.equal(env.OPENAI_API_KEY, "do-not-copy");
   assert.equal(env.LOCAL_CODEX_BRIDGE_STATUS_PORT, "0");
   assert.ok(env.LOCAL_CODEX_BRIDGE_TASKS_FILE.startsWith(state));
+  assert.equal(env.LOCAL_CODEX_BRIDGE_CHECKPOINT_DIR, join(state, "checkpoints"));
+  assert.equal(env.LOCAL_CODEX_BRIDGE_SERVICE_SESSIONS_FILE, join(state, "service_sessions.json"));
 });
 
 test("macOS security interpreter stores and reads a dummy key in an isolated keychain", { skip: process.platform !== "darwin" }, () => {

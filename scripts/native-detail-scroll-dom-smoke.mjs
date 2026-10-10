@@ -3,6 +3,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import http from "node:http";
 import { join } from "node:path";
 import { APP_SHELL_HTML } from "../.staging/dist/src/control-center-shell.js";
+import { probeHeadlessPage } from "./headless-page-probe.mjs";
 
 const edgePath = process.env.EDGE_EXE
   ?? (existsSync("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
@@ -53,6 +54,23 @@ await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const address = server.address();
 if (!address || typeof address === "string") throw new Error("DOM smoke server did not expose a port");
 const profile = mkdtempSync(join(process.cwd(), ".staging", "native-detail-scroll-dom-smoke-"));
+if (process.platform === "darwin") {
+  let passed = false;
+  try {
+    const evidence = await probeHeadlessPage(edgePath, profile, `http://127.0.0.1:${address.port}/native-detail-scroll`, `(() => {
+      const d = document.documentElement.dataset;
+      return { ready: d.nativeDetailScrollPass === "true", width: Number(d.nativeDetailInnerWidth), overflowY: d.nativeDetailOverflowY,
+        scrollHeight: Number(d.nativeDetailScrollHeight), clientHeight: Number(d.nativeDetailClientHeight), bottom: d.nativeDetailBottom === "true",
+        fixedHeader: d.nativeDetailFixedHeader === "true", noHorizontalOverflow: d.nativeDetailNoHorizontalOverflow === "true" };
+    })()`);
+    passed = evidence.width > 980 && evidence.scrollHeight > evidence.clientHeight && ["auto", "scroll"].includes(evidence.overflowY)
+      && evidence.bottom && evidence.fixedHeader && evidence.noHorizontalOverflow;
+    console.log("NATIVE_DETAIL_SCROLL_EVIDENCE=" + JSON.stringify(evidence));
+  } catch (error) { console.error(error.message); }
+  finally { await new Promise((r) => server.close(r)); rmSync(profile, { recursive: true, force: true }); }
+  console.log("NATIVE_DETAIL_SCROLL_DOM=" + (passed ? "PASS" : "FAIL"));
+  process.exit(passed ? 0 : 1);
+}
 const child = spawn(edgePath, [
   "--headless=new",
   "--disable-gpu",

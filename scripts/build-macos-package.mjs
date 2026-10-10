@@ -57,6 +57,7 @@ const goRoot = run("go", ["env", "GOROOT"], source, env, true).trim();
 copyFileSync(join(goRoot, "LICENSE"), join(output, "LICENSE-Go.txt"));
 writeFileSync(join(output, "TUNNEL-PROVENANCE.json"), JSON.stringify({ upstream: "https://github.com/openai/tunnel-client", upstream_tag: "v0.0.16", upstream_commit: "5f99daabd4aa4a77049e6d81d54a0d8c18335397", source_sha256: expected, go: "go1.27.2", changes, modified_runtime: true, official_binary: false, notarized: false, architecture: process.arch, modules }, null, 2));
 writeFileSync(join(output, "tunnel-client.version.txt"), "0.0.16-lcb.1 (community dependency-repair build)\n");
+writeFileSync(join(output, "package.json"), JSON.stringify({ name: "local-codex-bridge", version: "6.2.0-macos-preview", build_label: "macos-browser-host-preview", private: true, type: "module", engines: { node: ">=24" } }, null, 2));
 cpSync(join(root, ".staging", "dist", "src"), join(output, "dist", "src"), { recursive: true });
 mkdirSync(join(output, "scripts"));
 copyFileSync(join(root, "scripts", "macos-bridge.mjs"), join(output, "scripts", "macos-bridge.mjs"));

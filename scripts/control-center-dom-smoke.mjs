@@ -3,6 +3,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import http from "node:http";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { probeHeadlessPage } from "./headless-page-probe.mjs";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const shellPath = resolve(process.env.DOM_SMOKE_SHELL ?? join(repoRoot, ".staging", "dist", "src", "control-center-shell.js"));
@@ -74,6 +75,21 @@ await new Promise((resolvePromise) => server.listen(0, "127.0.0.1", resolvePromi
 const address = server.address();
 if (!address || typeof address === "string") throw new Error("DOM smoke server did not expose a port");
 const profile = mkdtempSync(join(repoRoot, ".staging", "control-center-dom-smoke-"));
+if (process.platform === "darwin") {
+  let passed = false;
+  try {
+    const evidence = await probeHeadlessPage(edgePath, profile, "http://127.0.0.1:" + address.port + "/app", `(() => ({
+      ready: document.documentElement.dataset.controlCenterReady === "true" && !!document.getElementById("page-overview")
+        && !!document.querySelector(".client-fallback.hidden") && document.body.innerText.includes("总览"),
+      width: window.innerWidth, folderPickerDisabled: document.getElementById("chooseCwd")?.disabled === true
+    }))()`);
+    passed = evidence.ready;
+    console.log("CONTROL_CENTER_RENDER_EVIDENCE=" + JSON.stringify(evidence));
+  } catch (error) { console.error(error.message); }
+  finally { await new Promise((r) => server.close(r)); rmSync(profile, { recursive: true, force: true }); }
+  console.log("CONTROL_CENTER_DOM_READY=" + (passed ? "PASS" : "FAIL"));
+  process.exit(passed ? 0 : 1);
+}
 const child = spawn(edgePath, [
   "--headless=new",
   "--disable-gpu",
