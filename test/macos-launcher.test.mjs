@@ -19,7 +19,9 @@ test("Mac profile quotes paths, keeps key out of config/argv and isolates Bridge
   assert.throws(() => shellQuote("/Users/Demo\nrm"));
   const env = childEnvironment(state, "owner", 123, config, { HOME: "/Users/Demo", CONTROL_PLANE_API_KEY: "do-not-copy", OPENAI_API_KEY: "do-not-copy", HTTPS_PROXY: "http://127.0.0.1:1234" });
   assert.equal(env.HOME, "/Users/Demo"); assert.equal(env.HTTPS_PROXY, "http://127.0.0.1:1234");
-  assert.equal(env.CONTROL_PLANE_API_KEY, undefined); assert.equal(env.OPENAI_API_KEY, undefined);
+  assert.equal(env.CONTROL_PLANE_API_KEY, undefined);
+  // Preserve native Codex's explicit auth environment, without persisting it.
+  assert.equal(env.OPENAI_API_KEY, "do-not-copy");
   assert.equal(env.LOCAL_CODEX_BRIDGE_STATUS_PORT, "0");
   assert.ok(env.LOCAL_CODEX_BRIDGE_TASKS_FILE.startsWith(state));
 });

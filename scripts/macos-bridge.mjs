@@ -37,7 +37,7 @@ export function childEnvironment(state, generation, ownerPid, config, source = p
   // Preserve the user's actual Codex auth/home and proxy environment. Isolated
   // CI sets its own HOME/CODEX_HOME. Never copy or rewrite auth.json/config.toml.
   const env = { ...source };
-  delete env.CONTROL_PLANE_API_KEY; delete env.OPENAI_API_KEY;
+  delete env.CONTROL_PLANE_API_KEY;
   Object.assign(env, {
     CODEX_EXE: config.codex_executable, LCB_MAC_STATE_DIR: state,
     LCB_MAC_GENERATION: generation, LCB_MAC_OWNER_PID: String(ownerPid),
@@ -155,7 +155,7 @@ async function setup(state) {
   console.log("配置已保存。密钥不在 JSON/YAML 中。运行 node scripts/macos-bridge.mjs start。");
 }
 async function mcpChild(state) {
-  delete process.env.CONTROL_PLANE_API_KEY; delete process.env.OPENAI_API_KEY;
+  delete process.env.CONTROL_PLANE_API_KEY;
   const generation = process.env.LCB_MAC_GENERATION;
   const owner = Number(process.env.LCB_MAC_OWNER_PID);
   if (!generation || !Number.isInteger(owner) || !alive(owner)) throw new Error("MCP child 缺少有效 launcher ownership");
@@ -203,6 +203,7 @@ export async function supervise(state, config, key, { openBrowser = true, signal
   };
   try {
     while (!stopping && attempt <= 3) {
+      opened = false; // A recovered child publishes a fresh dynamic UI port.
       generation = randomUUID();
       writePrivate(lockFile, { pid: process.pid, generation, updated_at: new Date().toISOString() });
       writePrivate(join(state, "profile.yaml"), profile(config, state));
