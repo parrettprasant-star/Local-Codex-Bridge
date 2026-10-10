@@ -55,7 +55,7 @@ export async function probeHeadlessPage(executable, profile, url, expression) {
     let last;
     while (Date.now() < deadline) {
       const result = await request("Runtime.evaluate", { expression, returnByValue: true });
-      if (result.exceptionDetails) throw new Error("Real renderer exception: " + result.exceptionDetails.text);
+      if (result.exceptionDetails) throw new Error("Real renderer exception: " + (result.exceptionDetails.exception?.description ?? result.exceptionDetails.text));
       last = result.result?.value;
       if (last?.ready) return last;
       await wait(150);

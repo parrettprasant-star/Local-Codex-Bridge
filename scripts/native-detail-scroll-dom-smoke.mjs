@@ -58,6 +58,7 @@ if (process.platform === "darwin") {
   let passed = false;
   try {
     const evidence = await probeHeadlessPage(edgePath, profile, `http://127.0.0.1:${address.port}/native-detail-scroll`, `(() => {
+      if (!document.documentElement) return {ready:false};
       const d = document.documentElement.dataset;
       return { ready: d.nativeDetailScrollPass === "true", width: Number(d.nativeDetailInnerWidth), overflowY: d.nativeDetailOverflowY,
         scrollHeight: Number(d.nativeDetailScrollHeight), clientHeight: Number(d.nativeDetailClientHeight), bottom: d.nativeDetailBottom === "true",

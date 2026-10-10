@@ -78,12 +78,14 @@ const profile = mkdtempSync(join(repoRoot, ".staging", "control-center-dom-smoke
 if (process.platform === "darwin") {
   let passed = false;
   try {
-    const evidence = await probeHeadlessPage(edgePath, profile, "http://127.0.0.1:" + address.port + "/app", `(() => ({
+    const evidence = await probeHeadlessPage(edgePath, profile, "http://127.0.0.1:" + address.port + "/app", `(() => {
+      if (!document.documentElement || !document.body) return {ready:false};
+      return {
       ready: document.documentElement.dataset.controlCenterReady === "true" && !!document.getElementById("page-overview")
         && !!document.querySelector(".client-fallback.hidden") && document.body.innerText.includes("总览"),
-      width: window.innerWidth, folderPickerDisabled: document.getElementById("chooseCwd")?.disabled === true
-    }))()`);
-    passed = evidence.ready;
+      width: window.innerWidth, folderPickerDisabled: document.getElementById("pickCwd")?.disabled === true && document.getElementById("pickNativeCwd")?.disabled === true
+    };})()`);
+    passed = evidence.ready && evidence.folderPickerDisabled;
     console.log("CONTROL_CENTER_RENDER_EVIDENCE=" + JSON.stringify(evidence));
   } catch (error) { console.error(error.message); }
   finally { await new Promise((r) => server.close(r)); rmSync(profile, { recursive: true, force: true }); }
