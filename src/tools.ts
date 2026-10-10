@@ -1,4 +1,4 @@
-import path from "node:path";
+import { normalizeLocalAbsolutePath } from "./local-path.js";
 
 import {
   AppServerManager,
@@ -89,7 +89,7 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
         cwd: {
           type: "string",
           maxLength: 1000,
-          description: "Optional exact absolute Windows drive-letter cwd filter for thread/list.",
+          description: "Optional exact absolute local cwd filter for thread/list (Windows drive-letter or macOS/POSIX path).",
         },
         search_term: {
           type: "string",
@@ -163,7 +163,7 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
         cwd: {
           type: "string",
           maxLength: 1000,
-          description: "Absolute Windows drive-letter cwd. Required for a new thread; optional override for resume.",
+          description: "Absolute local cwd (Windows drive-letter or macOS/POSIX path). Required for a new thread; optional override for resume.",
         },
         required_outputs: {
           type: "array",
@@ -215,7 +215,7 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
           type: "array",
           maxItems: 50,
           items: { type: "string", minLength: 1, maxLength: 1000 },
-          description: "Explicit Windows write roots required for workspace-write tasks.",
+          description: "Explicit absolute local write roots required for workspace-write tasks.",
         },
         sandbox: sandboxSchema,
         approval_policy: approvalPolicySchema,
@@ -250,7 +250,7 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
           type: "string",
           minLength: 1,
           maxLength: 1000,
-          description: "Optional absolute Windows drive-letter project directory; project_id can resolve it automatically.",
+          description: "Optional absolute local project directory; project_id can resolve it automatically.",
         },
         required_outputs: {
           type: "array",
@@ -737,17 +737,8 @@ function enumValue<T extends string>(
 }
 
 export function validateWindowsCwd(value: string): string {
-  value = stripOuterWindowsPathQuotes(value);
-  if (value.includes("\0")) {
-    throw new Error("cwd contains a NUL character");
-  }
-  if (/^(?:\\\\|\/\/|\\\\[?.]\\|\\[?.]\\)/.test(value)) {
-    throw new Error("cwd must not be a UNC or Windows device path");
-  }
-  if (!/^[A-Za-z]:[\\/]/.test(value) || !path.win32.isAbsolute(value)) {
-    throw new Error("cwd must be an absolute Windows drive-letter path");
-  }
-  return path.win32.normalize(value);
+  // Compatibility export; physical execution is validated on the host OS.
+  return normalizeLocalAbsolutePath(stripOuterWindowsPathQuotes(value));
 }
 
 function responseRecord(value: unknown, method: string): Record<string, unknown> {

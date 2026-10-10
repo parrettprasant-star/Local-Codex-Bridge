@@ -5,6 +5,7 @@ import {
   type ServerResponse,
 } from "node:http";
 import type { AddressInfo } from "node:net";
+import { normalizeLocalAbsolutePath } from "./local-path.js";
 
 import { ModelGuard, type ModelGuardStatus } from "./model-guard.js";
 import type { CodexAppServerAdapter } from "./app-server-adapter.js";
@@ -590,9 +591,8 @@ function serviceTaskInput(value: unknown): TaskDefinitionInput {
   if (typeof value.text !== "string" || value.text.trim().length === 0) {
     throw new TaskManagerValidationError("text must be a non-empty string");
   }
-  if (typeof value.cwd !== "string" || !/^[A-Za-z]:[\\/]/.test(value.cwd)) {
-    throw new TaskManagerValidationError("cwd must be an absolute Windows drive-letter path");
-  }
+  try { normalizeLocalAbsolutePath(typeof value.cwd === "string" ? value.cwd : ""); }
+  catch { throw new TaskManagerValidationError("cwd must be an absolute local project directory"); }
   if ("approval_policy" in value && value.approval_policy !== "on-request") {
     throw new TaskManagerValidationError("AGENTS submission requires approval_policy on-request");
   }
@@ -632,8 +632,9 @@ function nativeThreadListParams(url: URL): Record<string, unknown> {
     throw new HttpRequestError(400, `limit must be an integer from 1 to ${NATIVE_THREAD_PAGE_SIZE}`);
   }
   const cwd = url.searchParams.get("cwd")?.trim() ?? "";
-  if (cwd && !/^[A-Za-z]:[\\/]/.test(cwd)) {
-    throw new HttpRequestError(400, "cwd must be an absolute Windows drive-letter path");
+  if (cwd) {
+    try { normalizeLocalAbsolutePath(cwd); }
+    catch { throw new HttpRequestError(400, "cwd must be an absolute local project directory"); }
   }
   const searchTerm = url.searchParams.get("search")?.trim() ?? "";
   const cursor = url.searchParams.get("cursor")?.trim() ?? "";
@@ -1091,8 +1092,13 @@ export class TaskStatusServer {
       }
       if (method === "GET" && url.pathname === DIRECTORY_VALIDATE_PATH) {
         const directory = url.searchParams.get("path")?.trim() ?? "";
-        if (!/^[A-Za-z]:[\\/]/.test(directory)) {
-          writeJson(response, 400, { valid: false, path: directory, error: "请选择或输入有效的 Windows 工作目录。" });
+        let localPath = false;
+        try {
+          const normalized = normalizeLocalAbsolutePath(directory);
+          localPath = process.platform === "win32" ? !normalized.startsWith("/") : normalized.startsWith("/");
+        } catch { /* invalid input stays false */ }
+        if (!localPath) {
+          writeJson(response, 400, { valid: false, path: directory, error: "请选择或输入本机项目的绝对路径。" });
           return;
         }
         let valid = false;

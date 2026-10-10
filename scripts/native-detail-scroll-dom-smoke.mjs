@@ -64,7 +64,8 @@ child.stdout.on("data", (chunk) => { output += chunk; });
 child.stderr.on("data", (chunk) => { errorOutput = (errorOutput + chunk).slice(-4_000); });
 const exitCode = await new Promise((resolve) => {
   const timeout = setTimeout(() => {
-    if (child.pid) spawnSync("taskkill.exe", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
+    if (child.pid && process.platform === "win32") spawnSync("taskkill.exe", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
+    else child.kill("SIGTERM");
     resolve(null);
   }, 8_000);
   child.once("close", (code) => { clearTimeout(timeout); resolve(code); });

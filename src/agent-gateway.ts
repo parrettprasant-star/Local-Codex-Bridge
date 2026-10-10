@@ -1,4 +1,4 @@
-import path from "node:path";
+import { normalizeLocalAbsolutePath } from "./local-path.js";
 
 import {
   sanitizeForTransport,
@@ -155,16 +155,7 @@ function optionalString(
 }
 
 function validateWindowsCwd(value: string): string {
-  if (value.includes("\0")) {
-    throw new Error("cwd contains a NUL character");
-  }
-  if (/^(?:\\\\|\/\/)/.test(value)) {
-    throw new Error("cwd must not be a UNC or Windows device path");
-  }
-  if (!/^[A-Za-z]:[\\/]/.test(value) || !path.win32.isAbsolute(value)) {
-    throw new Error("cwd must be an absolute Windows drive-letter path");
-  }
-  return path.win32.normalize(value);
+  return normalizeLocalAbsolutePath(value);
 }
 
 function onlyKeys(value: Record<string, unknown>, allowed: readonly string[]): void {

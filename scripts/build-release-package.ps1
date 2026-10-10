@@ -33,6 +33,7 @@ Copy-Item -LiteralPath (Join-Path $repo 'windows\desktop\install.cmd') -Destinat
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'verify-release-package.ps1') -Destination (Join-Path $output 'verify-release-package.ps1')
 foreach ($name in @('SECURITY.md','CONTRIBUTING.md','RELEASE-GATES.md','RELEASE-NOTES-6.2.0.md',
     'START-HERE.zh-CN.md','USER-GUIDE.zh-CN.md','CHATGPT-PROMPTS.zh-CN.md','SCREENSHOT-GUIDE.zh-CN.md',
+    'MACOS.zh-CN.md','CHATGPT-PLUGIN-SETUP.zh-CN.md',
     'PRIVACY-RELEASE.zh-CN.md','projects.json.example')) {
     Copy-Item -LiteralPath (Join-Path $documentation $name) -Destination (Join-Path $output $name)
 }

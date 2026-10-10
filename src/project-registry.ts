@@ -4,6 +4,7 @@ import {
   statSync,
 } from "node:fs";
 import path from "node:path";
+import { normalizeLocalAbsolutePath, isWithinLocalRoot } from "./local-path.js";
 
 export const PROJECT_REGISTRY_FILE_ENV = "LOCAL_CODEX_BRIDGE_PROJECTS_FILE";
 export const PROJECT_REGISTRY_SCHEMA_VERSION = 1;
@@ -55,10 +56,7 @@ function windowsPath(value: unknown, field: string): string {
   if (normalized.includes("\0")) {
     throw new Error(`${field} contains a NUL character`);
   }
-  if (!/^[A-Za-z]:[\\/]/.test(normalized)) {
-    throw new Error(`${field} must be an absolute Windows drive-letter path`);
-  }
-  return path.win32.normalize(normalized);
+  return normalizeLocalAbsolutePath(normalized);
 }
 
 function capabilities(value: unknown): string[] {
@@ -88,14 +86,7 @@ function normalizeProject(value: unknown): ProjectRecord {
 }
 
 function isWithinRoot(rootPath: string, candidatePath: string): boolean {
-  const root = path.win32.normalize(rootPath).toLowerCase();
-  const candidate = path.win32.normalize(candidatePath).toLowerCase();
-  const relative = path.win32.relative(root, candidate);
-  return relative.length === 0 || (
-    relative !== ".." &&
-    !relative.startsWith("..\\") &&
-    !path.win32.isAbsolute(relative)
-  );
+  return isWithinLocalRoot(rootPath, candidatePath);
 }
 
 function projectAvailable(project: ProjectRecord): boolean {

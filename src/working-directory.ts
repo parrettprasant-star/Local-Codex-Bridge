@@ -4,6 +4,7 @@ import {
   type Stats,
 } from "node:fs";
 import path from "node:path";
+import { normalizeLocalAbsolutePath, isWithinLocalRoot } from "./local-path.js";
 
 const MAX_WORKING_DIRECTORY_CHARS = 1_000;
 const MAX_REQUIRED_OUTPUTS = 50;
@@ -134,10 +135,10 @@ export function normalizeRequiredOutputPaths(value: unknown): string[] {
       throw new WorkingDirectoryError(
         "invalid_working_directory",
         typeof item === "string" ? item : "",
-        `required_outputs[${index}]必须是有效的绝对 Windows 文件路径。`,
+        `required_outputs[${index}]必须是有效的本机绝对文件路径。`,
       );
     }
-    const normalized = lexicalWindowsPath(item, `required_outputs[${index}]`);
+    const normalized = normalizeLocalAbsolutePath(item);
     unique.add(normalized);
   }
   return [...unique];
@@ -172,11 +173,7 @@ export class WorkingDirectoryResolver {
 
   resolve(requested: string, approvedRoots: readonly string[] = []): WorkingDirectoryResolution {
     if (this.#platform !== "win32") {
-      throw new WorkingDirectoryError(
-        "working_directory_unsupported",
-        requested,
-        "本地执行器当前只支持 Windows 工作目录。",
-      );
+      return this.#resolvePosix(requested, approvedRoots);
     }
     let canonical: string;
     try {
@@ -285,5 +282,34 @@ export class WorkingDirectoryResolver {
       physical_cwd: physical,
       trace,
     };
+  }
+
+  #resolvePosix(requested: string, approvedRoots: readonly string[]): WorkingDirectoryResolution {
+    let canonical: string | null = null;
+    try {
+      canonical = normalizeLocalAbsolutePath(requested, true);
+      if (!canonical.startsWith("/")) throw new WorkingDirectoryError("invalid_working_directory", requested, "请使用本机绝对路径，例如 /Users/你的用户名/Projects。");
+      if (!this.#stat(canonical).isDirectory()) throw new WorkingDirectoryError("working_directory_not_directory", requested, "指定路径不是文件夹，请重新选择工作目录。");
+      const physical = normalizeLocalAbsolutePath(this.#realpath(canonical));
+      if (!physical.startsWith("/")) throw new Error("invalid physical directory");
+      const roots = approvedRoots.map((root) => normalizeLocalAbsolutePath(this.#realpath(normalizeLocalAbsolutePath(root))));
+      if (roots.length > 0 && !roots.some((root) => isWithinLocalRoot(root, physical))) {
+        throw new WorkingDirectoryError("working_directory_outside_scope", requested, "工作目录不在当前任务允许的项目范围内。");
+      }
+      const trace: WorkingDirectoryTrace = {
+        requested_cwd: requested, normalized_cwd: canonical, validated_cwd: physical,
+        executor_cwd: physical, win32_current_directory: null, reason: null,
+      };
+      this.#lastTrace = trace;
+      return { requested, canonical_cwd: canonical, safe_process_cwd: physical, physical_cwd: physical, trace };
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      const failure = error instanceof WorkingDirectoryError ? error : new WorkingDirectoryError(
+        canonical === null ? "invalid_working_directory" : code === "ENOENT" || code === "ENOTDIR" ? "working_directory_not_found" : "working_directory_unavailable",
+        requested, canonical === null ? "请使用不带引号的本机绝对项目路径。" : code === "ENOENT" || code === "ENOTDIR" ? "工作目录不存在，请重新选择。" : "无法读取指定工作目录，请检查权限。",
+      );
+      this.#recordFailure(requested, canonical, failure.code);
+      throw failure;
+    }
   }
 }

@@ -2,6 +2,11 @@
 
 **ChatGPT ↔ local Codex Agent control center for Windows.**
 
+**Cross-platform update:** `v6.2.0` remains the Windows x64 stable release.
+The [macOS browser-host preview](MACOS.zh-CN.md) is separate, not a Windows EXE
+for Mac or a notarized `.app`. CI and local MCP tests do not replace actual Mac
+ChatGPT Cloud acceptance; do not call the preview a stable Mac release.
+
 让 ChatGPT 通过 MCP 连接你自己电脑上的 Codex：Windows 本地 Agent 控制中心，
 提供持久会话查看、独立任务监督和结果摘要。Local Codex Bridge is a
 **ChatGPT–Codex bridge / local Agent gateway / MCP server** with a Windows
@@ -16,6 +21,11 @@ This is not a public ChatGPT App Store submission.
 
 第一次使用请从 [小白快速安装](START-HERE.zh-CN.md) 开始。下载 Windows ZIP，
 完整解压到短目录后双击 `install.cmd`，不需要编译源码。
+
+想让本机 Codex 带着配置，复制 [一句安装指令](CHATGPT-PROMPTS.zh-CN.md#一句话开始安装windows--mac)。
+网页“添加 → 添加自定义 MCP 服务器 → Tunnel”的跨平台步骤见
+[ChatGPT 插件配置](CHATGPT-PLUGIN-SETUP.zh-CN.md)。登录、授权、真实调用是独立验收点，
+不承诺“下载后所有账号自动连通”。
 
 这是让 ChatGPT 使用你电脑上 Codex 的桥梁，不是另一个 ChatGPT，也不是一个
 下载后就自动取得账号权限的插件。**先确认自己的账号可以使用自定义 MCP / Tunnel，

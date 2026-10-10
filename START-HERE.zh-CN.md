@@ -2,6 +2,10 @@
 
 适用：Local Codex Bridge 6.2.0，Windows 10/11 x64。社区软件，未代码签名；不是 OpenAI 官方产品，也不是 ChatGPT 插件商店的公开应用。
 
+Mac 用户不能运行这个 Windows EXE，请转到 [Mac 浏览器版预览](MACOS.zh-CN.md)。
+两平台的网页配置见 [添加 ChatGPT 插件](CHATGPT-PLUGIN-SETUP.zh-CN.md)，想由本机
+Codex 引导可复制 [一句安装指令](CHATGPT-PROMPTS.zh-CN.md#一句话开始安装windows--mac)。
+
 你要做的只有五段：**准备依赖 → 解压安装 → 填自己的连接信息 → 在 ChatGPT 连接 → 发一个只读测试**。日常使用不用编译源码，不用另外手工运行 tunnel-client。
 
 想边看图边操作，请配合 [ChatGPT 调用与 Bridge 界面图解](SCREENSHOT-GUIDE.zh-CN.md)。图解不替代本页的账号权限、依赖和首次配置步骤。

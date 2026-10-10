@@ -8,6 +8,9 @@ $required=@('README.md','TUNNEL-SETUP.md','START-HERE.zh-CN.md','USER-GUIDE.zh-C
 # whenever present; new README/START-HERE links also make omission fail below.
 $screenshotGuide=Join-Path $root 'SCREENSHOT-GUIDE.zh-CN.md'
 if(Test-Path -LiteralPath $screenshotGuide -PathType Leaf){$required+='SCREENSHOT-GUIDE.zh-CN.md'}
+foreach($name in @('MACOS.zh-CN.md','CHATGPT-PLUGIN-SETUP.zh-CN.md')){
+    if(Test-Path -LiteralPath (Join-Path $root $name) -PathType Leaf){$required+=$name}
+}
 foreach($name in $required){
     if(-not(Test-Path -LiteralPath (Join-Path $root $name) -PathType Leaf)){throw ('Missing user documentation: '+$name)}
 }

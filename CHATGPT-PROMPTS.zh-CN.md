@@ -1,5 +1,15 @@
 # 可复制的安装与调用指令
 
+## 一句话开始安装：Windows / Mac
+
+把这段给能操作本机的**官方 Codex**，不是尚未连接的网页插件：
+
+```text
+请按 https://github.com/parrettprasant-star/Local-Codex-Bridge 的当前中文说明帮我安装配置 Bridge。先识别 Windows/Mac、芯片和账号权限；Windows 使用正式发布包，Mac 阅读 MACOS.zh-CN.md 并确认真实可用的预览包，不假称正式支持。检查 Node 24+ 和官方 Codex CLI；新目录安装、可信 SHA256 校验，不覆盖旧版、不删 .codex/会话/历史、不改原生 Codex/代理/启动项。一步一步说明成功标志；依赖安装、本人登录、Tunnel注册/key和钥匙串/系统授权让我亲自确认，不在聊天中索取密钥。完成后按 CHATGPT-PLUGIN-SETUP.zh-CN.md 带我在网页添加自己的私有 Tunnel，只真实测试 get_agent_list/get_capabilities，不读私人项目、不创建任务；缺权限/无Mac包/连接失败时明确停在真实层级。
+```
+
+先安装官方 Codex 才能让它执行本机配置。不能用提示词绕过账号权限/登录，也不能承诺用户完全无需本人授权。
+
 这些是示例，不是自动授权。把示例目录/project_id 换成自己的已存在项目。不要粘贴密钥或 auth.json，不让助手伪造工具返回。使用当前 6.2.0 的实际 13-tool catalog，不承诺写入/terminal 已在 Agent Gateway 开放。
 
 ## 先选你需要复制的那一段

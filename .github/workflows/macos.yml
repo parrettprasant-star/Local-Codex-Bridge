@@ -1,0 +1,60 @@
+name: macOS preview validation
+on:
+  push:
+    branches: [main, 'codex/cross-platform-onboarding']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: macos-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: '1.27.2'
+          cache: false
+      - name: Dependencies and type check
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build:staging
+          npm run build
+      - name: Paths, scopes, native adapter and persistence
+        run: |
+          node --test --test-isolation=none .staging/dist/test/local-path.test.js .staging/dist/test/runtime.test.js .staging/dist/test/mcp.test.js .staging/dist/test/app-server.test.js .staging/dist/test/app-server-adapter.test.js .staging/dist/test/agent-gateway.test.js .staging/dist/test/project-registry.test.js .staging/dist/test/native-history.test.js .staging/dist/test/scheduled-tasks.test.js .staging/dist/test/task-progress-view.test.js .staging/dist/test/control-center-read-model.test.js .staging/dist/test/result-integrity.test.js .staging/dist/test/result-service.test.js .staging/dist/test/write-claims.test.js .staging/dist/test/durable-task-store.test.js .staging/dist/test/output-directory.test.js .staging/dist/test/local-http-security.test.js
+          node --test test/macos-launcher.test.mjs
+          npm run smoke:catalog
+          node scripts/macos-native-smoke.mjs
+      - name: Real browser render and independent scroll
+        env:
+          EDGE_EXE: /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+        run: |
+          npm run test:control-center-dom
+          npm run test:control-center-native-detail
+      - name: Build repaired Tunnel and clean preview package
+        run: node scripts/build-macos-package.mjs
+      - name: Verify actual Tunnel config and CLI (no key or cloud request)
+        run: |
+          artifacts/macos-preview/tunnel-client run --help > /dev/null
+          artifacts/macos-preview/tunnel-client version
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macos-preview-${{ matrix.runner }}
+          path: artifacts/macos-preview
+          if-no-files-found: error
